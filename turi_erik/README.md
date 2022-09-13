@@ -3,8 +3,8 @@
 ## Névjegyem
 
 - **Tűri Erik** - ELTE IK MOT demonstrátor
-- villanylevél: ***turierik@inf.elte.hu***
-- alternatív villanylevél: **Teams üzenet**
+- villanylevél: ***turierik@inf.elte.hu*** (esetleg Teams üzenet)
+    - bármely **más platformon** (ideértve, de nem kizárólag: Facebook, Messenger, Instagram, TikTok, Twitter, Discord, stb.) érkező hallgatói üzenetek **OLVASÁS NÉLKÜL TÖRLÉSRE KERÜLNEK!**
 
 ## Csoportjaim
 
@@ -12,7 +12,7 @@
     - szerda 17:45 - 19:15
     - déli tömb 2.710 (PC 10)
 - **esti 1-2. csoport**
-    - szerda 19:30 - 21:00 (**összevont gyakorlat**)
+    - szerda 19:30 - 21:00 (**összevont 90 perces gyakorlat!**)
     - déli tömb 00.803 (prog. nyelvi labor)
 
 ## Platformok
