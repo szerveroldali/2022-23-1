@@ -1,0 +1,18 @@
+{
+    "name": "turierik/composer_demo",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Turierik\\ComposerDemo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tűri Erik",
+            "email": "54734700+turierik@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "fakerphp/faker": "^1.20"
+    }
+}

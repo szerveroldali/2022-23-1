@@ -21,4 +21,6 @@
     - [Tantárgyi közös GitHub repo](https://github.com/szerveroldali/2022-23-1)
 - Hivatalosabb tematika, követelmények, számonkérések beadása, előadásdiák, stb.
     - [Tantárgyi Canvas felület](https://canvas.elte.hu/courses/30103)
+- Gyakorlati videók (estis csoport felvétele)
+    - [YouTube lejátszási lista](https://www.youtube.com/playlist?list=PL4alkMYFMfltGP3P5c_IU65GGiwNR-eFn)
 - Teams? Egyelőre csak vészhelyzetre! (pl. távoktatás, betegség, stb.)
