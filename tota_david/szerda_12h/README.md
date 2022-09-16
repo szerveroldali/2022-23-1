@@ -1,1 +1,1 @@
-# Szerda 12:00 gyakorlat
+# Szerda 12:15 gyakorlat
