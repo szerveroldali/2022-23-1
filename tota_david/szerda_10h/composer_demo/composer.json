@@ -1,0 +1,12 @@
+{
+    "name": "totadavid/composer_demo",
+    "type": "project",
+    "authors": [
+        {
+            "name": "David"
+        }
+    ],
+    "require": {
+        "fakerphp/faker": "^1.20"
+    }
+}
