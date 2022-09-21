@@ -1,0 +1,11 @@
+{
+    "name": "anony/asdfgh",
+    "autoload": {
+        "psr-4": {
+            "Anony\\Asdfgh\\": "src/"
+        }
+    },
+    "require": {
+        "fakerphp/faker": "^1.20"
+    }
+}
