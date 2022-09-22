@@ -1,0 +1,18 @@
+{
+    "name": "balazskristof/composer-demo",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Balazskristof\\ComposerDemo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "balazskristof",
+            "email": "kristofbalazs00@gmail.com"
+        }
+    ],
+    "require": {
+        "fakerphp/faker": "^1.20"
+    }
+}
