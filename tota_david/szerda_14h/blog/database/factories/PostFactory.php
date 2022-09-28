@@ -17,7 +17,10 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            //
+            //'title' => Str::ucfirst($faker->words(rand(3, 7), true)),
+            'title' => rtrim(fake()->sentence(), '.'),
+            'text' => fake()->paragraphs(rand(3,7), true),
+            'description' => fake()->sentence(),
         ];
     }
 }
