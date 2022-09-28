@@ -16,8 +16,20 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        // $table->id();
+        // $table->string('title', 255);
+        // $table->text('text');
+        // $table->string('description')->nullable();
+        // $table->string('cover_image_path')->nullable();
+        // $table->boolean('hidden')->default(false);
+        // $table->unsignedBigInteger('author_id')->nullable();
+        // $table->timestamps();
+
         return [
-            //
+            // Str::ucfirst(implode(" ", $faker->words(rand(2,6))))
+            'title' => rtrim(fake()->sentence(), '.'),
+            'text' => implode('\n\n', fake()->paragraphs(rand(3,7))),
+            'description' => fake()->sentence(),
         ];
     }
 }
