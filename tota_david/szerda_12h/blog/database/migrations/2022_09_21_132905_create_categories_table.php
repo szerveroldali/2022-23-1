@@ -15,8 +15,13 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+
             $table->string('name');
-            $table->string('color', 7); // #rrggbb
+
+            // #RRGGBBAA
+            $table->string('text_color', 9);
+            $table->string('background_color', 9);
+
             $table->timestamps();
         });
     }

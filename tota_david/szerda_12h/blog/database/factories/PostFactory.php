@@ -17,7 +17,17 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            //
+            // Ez is lehetne a title, sok jó megoldás van:
+            // 'title' => Str::ucfirst($faker->words(rand(3, 7), true))
+
+            // rtrim eltávolítja a pontot a mondat végéről
+            'title' => rtrim(fake()->sentence(), '.'),
+
+            // \n\n-ek mentén fűzzük össze a paragrafusok tömbjét
+            // 'text' => implode('\n\n', fake()->paragraphs(rand(2,8))),
+            'text' => fake()->paragraphs(rand(2,8), true),
+
+            'description' => fake()->sentence(),
         ];
     }
 }
