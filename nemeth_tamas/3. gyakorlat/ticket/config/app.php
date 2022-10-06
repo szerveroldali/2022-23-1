@@ -69,7 +69,9 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // Az alapértelmezett beállítás az 'UTC', de nekünk a budapesti idő kell, ami a 'Europe/Budapest'
+    // A teljes lista: https://www.php.net/manual/en/timezones.php
+    'timezone' => 'Europe/Budapest',
 
     /*
     |--------------------------------------------------------------------------
@@ -82,7 +84,8 @@ return [
     |
     */
 
-    'locale' => 'en',
+    // Ez akár maradhat is angolon ('en'), de ezt is átállíthatjuk a magyarra ('hu')
+    'locale' => 'hu',
 
     /*
     |--------------------------------------------------------------------------

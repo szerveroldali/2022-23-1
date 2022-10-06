@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Ticket;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $tickets = Auth::user()->tickets;
+    return view('site.tickets', ['tickets' => $tickets]);
+})->name('tickets');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

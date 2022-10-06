@@ -19,6 +19,15 @@ class Ticket extends Model
         'priority',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'done' => 'boolean',
+    ];
+
     public function comments() {
         return $this->hasMany(Comment::class);
     }
