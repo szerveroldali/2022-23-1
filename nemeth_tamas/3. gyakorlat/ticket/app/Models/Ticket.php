@@ -17,7 +17,6 @@ class Ticket extends Model
     protected $fillable = [
         'title',
         'priority',
-        'user_id',
     ];
 
     public function comments() {
@@ -25,6 +24,18 @@ class Ticket extends Model
     }
 
     public function users() {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot('is_submitter', 'is_responsible');
+    }
+
+    public function submitter() {
+        return $this->belongsToMany(User::class)
+            ->withPivot('is_submitter', 'is_responsible')
+            ->wherePivot('is_submitter', 1);
+    }
+
+    public function notSubmitters() {
+        return $this->belongsToMany(User::class)
+            ->withPivot('is_submitter', 'is_responsible')
+            ->wherePivot('is_submitter', 0);
     }
 }

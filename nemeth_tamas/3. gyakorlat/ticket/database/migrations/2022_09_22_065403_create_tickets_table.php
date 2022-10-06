@@ -18,9 +18,6 @@ return new class extends Migration
             $table->string('title');
             $table->enum('priority', [0,1,2,3]);
             $table->timestamps();
-
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

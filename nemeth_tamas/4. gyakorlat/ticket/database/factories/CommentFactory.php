@@ -16,11 +16,10 @@ class CommentFactory extends Factory
      */
     public function definition()
     {
-        $file = fake()->optional()->file();
         return [
             'text' => fake()->sentence(),
-            'filename' => $file,
-            'filename_hash' => $file,
+            'filename' => '/almafa.png',
+            'filename_hash' => '/almafa.png',
         ];
     }
 }
