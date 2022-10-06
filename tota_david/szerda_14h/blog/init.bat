@@ -1,24 +1,41 @@
-:: Ezzel a parancsfajllal lehet nullarol inicializalni a Laravel projektet Windows rendszereken
-
-:: Composer csomagok telepitese mindenfele interakcio es konzolra iras nelkul
+:: Composer-es csomagok telepítése mindenféle interakció és konzolra írás nélkül
 call composer install --no-interaction --quiet
-:: .env fajl elkeszitese, majd key generalas
-:: A kezdocsomagban jo a .env.example fajl, nem kell utolag atirni a db-t
-copy .env.example .env
+
+:: Beadandónak megfelelő .env fájl előállítása
+@echo off
+(
+  echo APP_NAME="Laravel beadandó"
+  echo APP_ENV=local
+  echo APP_KEY=
+  echo APP_DEBUG=true
+  echo APP_URL=http://localhost
+  echo.
+  echo DB_CONNECTION=sqlite
+) > .env
+@echo on
+
+:: Encryption key kigenerálása
 call php artisan key:generate
-:: NPM-es csomagok telepitese, szinten csendes modban
+
+:: Node Package Manager-es csomagok telepítése (csendes módban)
 call npm install --silent
-:: frontend oldali asset-ek kigeneralasa
-call npm run dev
-:: Ures database/database.sqlite fajl eloallitasa, hogy a migration mukodjon
+
+:: Frontend oldali asset-ek kigenerálása. A build opcióval a Vite dobja a watch módot
+:: (amitől megakadna az init folyamat), de ha Mix kapja meg, akkor ignorálja
+call npm run dev -- build
+
+:: Üres database/database.sqlite fájl előállítása, hogy a migration működjön
 type nul > database/database.sqlite
-:: Fresh migration keszitese
-call php artisan migrate:fresh
-:: Adatok seedelese
-call php artisan db:seed
-:: A .gitignore-s zippeles miatt nincs public, es enelkul nem megy a symlink creation
+
+:: Táblák létrehozása, seed-elés
+call php artisan migrate:fresh --seed
+
+:: Elképzelhető, hogy a storage-ben nem létezik a public, de szükséges legalább
+:: egy üres könyvtár a szimbolikus link elkészítéséhez
 mkdir .\storage\app\public
-:: Symlink keszitese, alap config szerint a /public/storage-rol a /storage/app/public-ra
+
+:: Symlink készítése, alap config szerint a /public/storage-ról a /storage/app/public-ra
 call php artisan storage:link
-:: App elinditasa
+
+:: Alkalmazás indítása
 call php artisan serve
