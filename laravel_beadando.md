@@ -21,7 +21,12 @@
 
 ## Változtatások
 
-**2022. október 5.** - A hallgatók számára közzétett első verzió. Amennyiben menet közben változás vagy pontosítás történik a feladatban, azt itt kiemelten jelezni fogjuk.
+- **2022. október 8.**
+  - `Comment` modell mezőinek pontosítása.
+  - Hibás címkéhez tartozó tárgyak lekérése esetén 404-es hiba előírása.
+  - Hasznos hivatkozások bővítése: _SQLite Viewer_ kiegészítő _VS Code_-hoz.
+- **2022. október 5.**
+  - A hallgatók számára közzétett első verzió. Amennyiben menet közben változás vagy pontosítás történik a feladatban, azt itt kiemelten jelezni fogjuk.
 
 ## Fontos tudnivalók
 
@@ -65,9 +70,9 @@ A feladathoz kötött **kiinduló csomag nincs**, javasolt azonban a **Laravel B
   - `időbélyegek`
 - `Comment` - a kiállított tárgyakhoz hozzá lehet szólni
   - `id`
-  - `name` (string)
+  - `text` (szöveg)
   - `időbélyegek`
-- `Label` - a kiállított tárgyak felcimkézhetők tulajdonságokkal
+- `Label` - a kiállított tárgyak felcímkézhetők tulajdonságokkal
   - `id`
   - `name` (string)
   - `display` (logikai)
@@ -119,6 +124,7 @@ Külön pontszám nélküli **minimumkövetelményként** teljesítendők az al�
   - Az **admin** a címkéket módosítani is tudja.
 - **Címkéhez tartozó tárgyak listázása** (2 pont)
   - Kell egy lehetőség (pl. a tárgy részletező oldalán az egyes címkékre kattintva) csak az adott címkével rendelkező tárgyak listázására.
+  - Amennyiben olyan címkét kérnénk le, amely nem létezik (rossz ID), adjon az oldal 404-es hibát!
 - **Új kiállított tárgy felvitele** (8 pont)
   - Az **admin** tudjon új tárgyat felvinni, amelyhez a kötelező adatokon túl opcionálisan tartozhat feltöltött kép is, illetve jelölőmezők segítségével lehessen a tárgyhoz tartozó címkéket kiválasztani.
   - A képfeltöltés **ténylegesen** legyen fájlfeltöltés, tehát nem elég csupán a kép nevét eltárolni!
@@ -166,6 +172,7 @@ Az alábbiakban adunk néhány hasznos hivatkozást, amiket érdemes szemügyre 
   - [Visual Studio Code](https://code.visualstudio.com/)
     - [Live Share](https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare)
     - [Laravel Extension Pack](https://marketplace.visualstudio.com/items?itemName=onecentlin.laravel-extension-pack)
+    - [SQLite Viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer)
   - [DB Browser for SQLite](https://sqlitebrowser.org/)
 - További CSS framework tippek (opcionális):
   - [Tailwind CSS](https://tailwindcss.com/)
