@@ -16,9 +16,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            // #RRGGBBAA
-            $table->string('text_color', 9);
-            $table->string('background_color', 9);
+            $table->enum('style', ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']);
             $table->timestamps();
         });
     }

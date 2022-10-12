@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,47 +16,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('posts.index');
 });
 
-Route::get('/posts', function () {
-    return view('posts.index');
-});
+Route::resource('posts', PostController::class);
+Route::resource('categories', CategoryController::class);
 
-Route::get('/posts/create', function () {
-    return view('posts.create');
-});
-
-Route::get('/posts/x', function () {
-    return view('posts.show');
-});
-
-Route::get('/posts/x/edit', function () {
-    return view('posts.edit');
-});
-
-// -----------------------------------------
-
-Route::get('/categories/create', function () {
-    return view('categories.create');
-});
-
-Route::get('/categories/x', function () {
-    return view('categories.show');
-});
-
-// -----------------------------------------
+// Route::get('/posts', function () {
+//     return view('posts.index', [
+//         'users_count' => \App\Models\User::count(),
+//         'categories_count' => \App\Models\Category::count(),
+//         'posts_count' => \App\Models\Post::count(),
+//     ]);
+// })->name('posts.index');
 
 Auth::routes();
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
