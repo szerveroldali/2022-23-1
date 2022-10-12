@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        $categories = \App\Models\Category::factory(rand(3,7))->create();
+        $categories = \App\Models\Category::factory(rand(7,10))->create();
         $posts = \App\Models\Post::factory(rand(10,15))->create();
 
         // A post a "közös pont": szerző + kategória is tartozik hozzá
