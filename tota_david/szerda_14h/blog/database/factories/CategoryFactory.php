@@ -18,8 +18,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'text_color' => fake()->safeHexColor() . "ff",
-            'background_color' => fake()->safeHexColor() . "ff",
+            'style' => fake()->randomElement(['primary', 'secondary','danger', 'warning', 'info', 'dark']),
         ];
     }
 }
