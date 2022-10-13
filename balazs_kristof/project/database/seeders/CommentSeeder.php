@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PostSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,11 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Post::factory(10)->create([
-            'user_id' => rand(1, 5)
-        ]);
+        //
+        \App\Models\Comment::create([
+            'user_id' => 1,
+            'post_id' => 1,
+            'text' => fake()->text(128)
+        ])->save();
     }
 }

@@ -14,5 +14,32 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
+
+Route::get('/posts', [\App\Http\Controllers\PostController::class, 'index']);
+
+Route::get('/posts/create', function () {
+    return view('posts.create');
+});
+
+Route::get('/posts/{id}', [\App\Http\Controllers\PostController::class, 'show']);
+
+
+Route::get('/posts/x/edit', function () {
+    return view('posts.edit');
+});
+
+// -----------------------------------------
+
+Route::get('/categories/create', function () {
+    return view('categories.create');
+});
+
+Route::get('/categories/x', function () {
+    return view('categories.show');
+});
+
+// -----------------------------------------
+
+Auth::routes();
