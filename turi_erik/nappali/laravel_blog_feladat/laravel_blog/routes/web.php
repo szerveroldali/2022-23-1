@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,13 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PostController::class, 'index']);
 
-Route::get('/categories/create', function () {
-    return view('categories.create');
-});
+Route::resource('posts', PostController::class);
+Route::resource('categories', CategoryController::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

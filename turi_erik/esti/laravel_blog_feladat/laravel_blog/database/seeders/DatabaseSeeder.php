@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Post;
+use App\Models\User;
+use App\Models\Category;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,17 +18,21 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $users = collect();
-        for ($i = 1; $i <= 10; $i++){
-            $users -> add(\App\Models\User::factory()->create(
+        $n = rand(5, 10);
+        for ($i = 1; $i <= $n; $i++){
+            $users -> add(User::factory()->create(
                 ['email' => 'user'.$i.'@szerveroldali.hu']
             ));
         }
 
-        for ($i = 1; $i <= 10; $i++){
-            \App\Models\Post::factory()->create(
-                ['user_id' => $users -> random() -> id]
-            );
-        }
+        $posts = Post::factory(rand(10, 20))->create();
+        $categories = Category::factory(rand(5, 10))->create();
+
+        $posts -> each(function($p) use (&$users, &$categories) {
+            $p -> author() -> associate($users -> random()) -> save();
+            $p -> categories() -> attach($categories -> random( rand(1, $categories -> count())));
+        });
+
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
