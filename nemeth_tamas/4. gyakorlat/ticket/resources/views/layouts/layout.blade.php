@@ -37,19 +37,19 @@
                 <div class="collapse navbar-collapse" id="main-navbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('tickets') }}">Nyitott feladatok</a>
+                            <a class="nav-link" href="{{ route('tickets.index') }}">Nyitott feladatok</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="lezart_feladatok.html">Lezárt feladatok</a>
+                            <a class="nav-link" href="{{ route('tickets.closed') }}">Lezárt feladatok</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="uj_feladat.html">Új feladat</a>
+                            <a class="nav-link" href="{{ route('tickets.create') }}">Új feladat</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="felhasznalok.html">Felhasználók (ADMIN)</a>
+                            <a class="nav-link" href="{{ route('users.index') }}">Felhasználók (ADMIN)</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="feladatok.html">Összes feladat (ADMIN)</a>
+                            <a class="nav-link" href="{{ route('tickets.all') }}">Összes feladat (ADMIN)</a>
                         </li>
                     </ul>
                     <div class="d-flex">

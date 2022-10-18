@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\TicketController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,13 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $tickets = Auth::user()->tickets->sortByDesc('created_at');
-    return view('site.tickets', ['tickets' => $tickets]);
-})->name('tickets');
+// Lezárt jegyek
+Route::get('tickets/closed', [TicketController::class, 'closed'])->middleware(['auth'])->name('tickets.closed');
+// Összes feladat
+Route::get('tickets/all', [TicketController::class, 'all'])->middleware('auth')->name('tickets.all');
+// Hibajegyekhez tartozó összes végpont (CRUD)
+Route::resource('tickets', TicketController::class)->middleware(['auth']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Felhasználó
+Route::get('users', function () {
+    return view('site.users', ['users' => User::all()]); // TODO: csak admin férhet hozzá
+})->middleware('auth')->name('users.index');
+
+Route::get('/', function () {
+    return redirect()->route('tickets.index');
+})->middleware('auth')->name('tickets');
 
 require __DIR__.'/auth.php';
