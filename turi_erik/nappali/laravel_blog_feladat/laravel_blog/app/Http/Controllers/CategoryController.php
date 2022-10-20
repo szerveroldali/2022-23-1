@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\User;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -39,25 +37,22 @@ class CategoryController extends Controller
     {
         $validated = $request -> validate(
             ['name' => 'required|min:3|unique:categories',
-            'text-color' => 'required|regex:/^#([0-9a-f]{8})$/i',
+            'text-color' => 'required',
             'bg-color' => 'required|regex:/^#([0-9a-f]{8})$/i'],
-            ['name.required' => 'A név kitöltése kötelező!',
-            'name.min' => 'A név legalább :min karakter legyen!',
-            'name.unique' => 'A név legyen egyedi!',
-            'text-color.regex' => 'A szín formátuma helytelen!',
-            'bg-color.regex' => 'A szín formátuma helytelen!']
+            ['name.required' => 'A név megadása kötelező!',
+            'name.min' => 'A név legalább :min karakter hosszú!',
+            'name.unique' => 'A név már foglalt!',
+            'bg-color.required' => 'Háttérszínt ki kell tölteni!',
+            'bg-color.regex' => 'A formátum helytelen!']
         );
 
-        // innentől fixen jó minden :)
-
+        // itt fixen minden átment :)
         $validated['text_color'] = $validated['text-color'];
         $validated['bg_color'] = $validated['bg-color'];
 
-        $c = Category::create($validated);
+        Category::create($validated);
 
-        Session::flash('category-created', $c -> name);
-
-        return redirect() -> route('home');
+        return redirect() -> route('posts.index');
     }
 
     /**
@@ -68,13 +63,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('categories.show', [
-            'category' => $category,
-            'posts' => $category -> posts() -> with('author') -> get(),
-            'categories' => Category::all(),
-            'user_count' => User::count(),
-            'comment_count' => 0
-        ]);
+        //
     }
 
     /**
@@ -100,19 +89,21 @@ class CategoryController extends Controller
         $validated = $request -> validate(
             ['name' => 'required|min:3|unique:categories',
             'text-color' => 'required',
-            'bg-color' => 'required'],
-            ['name.required' => 'A név kitöltése kötelező!',
-            'name.min' => 'A név legalább :min karakter legyen!',
-            'name.unique' => 'A név legyen egyedi!']
+            'bg-color' => 'required|regex:/^#([0-9a-f]{8})$/i'],
+            ['name.required' => 'A név megadása kötelező!',
+            'name.min' => 'A név legalább :min karakter hosszú!',
+            'name.unique' => 'A név már foglalt!',
+            'bg-color.required' => 'Háttérszínt ki kell tölteni!',
+            'bg-color.regex' => 'A formátum helytelen!']
         );
 
-        // innentől fixen jó minden :)
-
+        // itt fixen minden átment :)
         $validated['text_color'] = $validated['text-color'];
         $validated['bg_color'] = $validated['bg-color'];
 
         $category -> update($validated);
-        return redirect() -> route('home');
+
+        return redirect() -> route('posts.index');
     }
 
     /**

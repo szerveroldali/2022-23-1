@@ -1,6 +1,6 @@
 <x-guest-layout>
     <x-slot name="title">
-        Főoldal
+        {{ $category -> name }} bejegyzései
     </x-slot>
 <div class="container mx-auto p-3 lg:px-36">
     <div class="grid grid-cols-1 lg:grid-cols-2 mb-4">
@@ -8,23 +8,16 @@
             <h1 class="font-bold my-4 text-4xl">Szerveroldali Blog</h1>
         </div>
         <div class="flex items-center gap-2 lg:justify-end">
-            <a href="{{ route('categories.create') }}" class="bg-green-500 hover:bg-green-700 px-2 py-1 text-white"><i
-                    class="fas fa-plus-circle"></i> Új kategória</a>
-            <a href="{{ route('posts.create')}}" class="bg-green-500 hover:bg-green-700 px-2 py-1 text-white"><i
-                    class="fas fa-plus-circle"></i> Új bejegyzés</a>
+            <a href="{{ route('categories.edit', $category) }}" class="bg-yellow-500 hover:bg-yellow-700 px-2 py-1 text-white"><i
+                    class="fas fa-edit"></i> Kategória szerkesztése</a>
         </div>
     </div>
     <div class="grid grid-cols-4 gap-6">
         <div class="col-span-4 lg:col-span-3">
-            <h2 class="font-semibold text-3xl my-2">Minden bejegyzés</h2>
+            <h2 class="font-semibold text-3xl my-2">{{ $category -> name }} bejegyzései</h2>
             <div class="grid grid-cols-3 gap-3">
-                @if(Session::has('category-created'))
-                <div class="col-span-3 bg-green-200 text-center rounded-lg py-1">
-                    A(z) {{ Session::get('category-created') }} kategória létrejött!
-                </div>
-                @endif
 
-                @foreach ($posts as $p)
+                @forelse ($posts as $p)
                 <div class="col-span-3 lg:col-span-1">
                     <img src="https://www.ispreview.co.uk/wp-content/uploads/london_city_2017_uk.jpg">
                     <div class="px-2.5 py-2 border-r border-l border-b border-gray-400 ">
@@ -42,7 +35,11 @@
                                 class="fas fa-angle-right"></i></button>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <div class="col-span-3 bg-red-200 text-center rounded-lg py-1">
+                    Nem található bejegyzés!
+                </div>
+                @endforelse
             </div>
         </div>
         <div class="col-span-4 lg:col-span-1">

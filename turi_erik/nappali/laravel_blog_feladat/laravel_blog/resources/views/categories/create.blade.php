@@ -10,7 +10,7 @@
     </div>
 
     <form
-        x-data="{ categoryName: '', bgColor: '#ff9910ff', textColor: '#ffffffff'}"
+        x-data="{ categoryName: '{{ old('name') }}', bgColor: '{{ old('bg-color', '#ff9910ff')}}', textColor: '{{ old('text-color', '#ffffffff') }}' }"
         x-init="() => {
             new Picker({
                 color: bgColor,
@@ -25,7 +25,9 @@
                 onDone: (color) => textColor = color.hex
             });
         }"
+        action="{{ route('categories.store') }}"
         method="POST">
+        @csrf
         <div class="grid grid-cols-4 gap-6">
             <div class="col-span-4 lg:col-span-2 grid grid-cols-2 gap-3">
                 <div class="col-span-2">
@@ -35,11 +37,17 @@
                         name="name"
                         id="name"
                         class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300" x-model="categoryName">
+                    @error('name')
+                        <div class="text-red-500 font-medium">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-span-2 lg:col-span-1">
                     <label class="block text-sm font-medium text-gray-700">Háttér színe</label>
                     <div x-ref="bgColorPicker" id="bg-color-picker" class="mt-1 h-8 w-full border border-black" :style="`background-color: ${bgColor};`"></div>
                     <p x-text="bgColor"></p>
+                    @error('bg-color')
+                        <div class="text-red-500 font-medium">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-span-2 lg:col-span-1">
                     <label class="block text-sm font-medium text-gray-700">Szöveg színe</label>

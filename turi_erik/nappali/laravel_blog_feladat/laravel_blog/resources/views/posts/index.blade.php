@@ -59,7 +59,7 @@
                     </h3>
                     <div class="flex flex-row flex-wrap gap-1 mt-3">
                         @foreach($categories as $c)
-                        <a href="#" class="py-0.5 px-1.5 font-semibold text-sm" style="background-color: {{ $c -> bg_color }}; color: {{ $c -> text_color }};">{{ $c -> name }}</a>
+                        <a href="{{ route('categories.edit', $c) }}" class="py-0.5 px-1.5 font-semibold text-sm" style="background-color: {{ $c -> bg_color }}; color: {{ $c -> text_color }};">{{ $c -> name }}</a>
                         @endforeach
                     </div>
                 </div>

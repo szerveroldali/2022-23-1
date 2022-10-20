@@ -32,7 +32,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create', ['categories' => Category::all()]);
     }
 
     /**
@@ -43,7 +43,18 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request -> validate(
+            ['categories' => 'nullable',
+            'categories.*' => 'integer|distinct|exists:categories,id',
+            'title' => 'required',
+            'content' => 'required' ]
+        );
+
+        $p = Post::create($validated);
+        $p -> author() -> associate(User::all() -> random()) -> save();
+        $p -> categories() -> sync($request -> categories);
+
+        return redirect() -> route('posts.index');
     }
 
     /**

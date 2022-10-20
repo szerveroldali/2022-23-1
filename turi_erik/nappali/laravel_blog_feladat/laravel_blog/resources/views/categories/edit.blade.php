@@ -1,14 +1,16 @@
 <x-guest-layout>
-    <x-slot name="title">Új kategória</x-slot>
+    <x-slot name="title">
+        Új kategória
+    </x-slot>
 <div class="container mx-auto p-3 overflow-hidden min-h-screen">
     <div class="mb-5">
-        <h1 class="font-semibold text-3xl mb-4">Új kategória</h1>
+        <h1 class="font-semibold text-3xl mb-4">{{ $category -> name }} szerkesztése</h1>
         <p class="mb-2">Ezen az oldalon tudsz új kategóriát létrehozni. A bejegyzéseket úgy tudod hozzárendelni, ha a kategória létrehozása után módosítod a bejegyzést, és ott bejelölöd ezt a kategóriát is.</p>
-        <a href="{{ route('home') }}" class="text-blue-400 hover:text-blue-600 hover:underline"><i class="fas fa-long-arrow-alt-left"></i> Vissza a bejegyzésekhez</a>
+        <a href="/" class="text-blue-400 hover:text-blue-600 hover:underline"><i class="fas fa-long-arrow-alt-left"></i> Vissza a bejegyzésekhez</a>
     </div>
 
     <form
-        x-data="{ categoryName: '{{ old('name', '') }}', bgColor: '{{ old('bg-color', '#ff9910ff')}}', textColor: '{{ old('text-color', '#ffffffff')}}' }"
+        x-data="{ categoryName: '{{ old('name', $category -> name) }}', bgColor: '{{ old('bg-color', $category -> bg_color)}}', textColor: '{{ old('text-color', $category -> text_color) }}' }"
         x-init="() => {
             new Picker({
                 color: bgColor,
@@ -23,9 +25,10 @@
                 onDone: (color) => textColor = color.hex
             });
         }"
-        action="{{ route('categories.store') }}"
+        action="{{ route('categories.update', $category) }}"
         method="POST">
         @csrf
+        @method('PATCH')
         <div class="grid grid-cols-4 gap-6">
             <div class="col-span-4 lg:col-span-2 grid grid-cols-2 gap-3">
                 <div class="col-span-2">
@@ -36,7 +39,7 @@
                         id="name"
                         class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300" x-model="categoryName">
                     @error('name')
-                    <div class="font-medium text-red-500">{{ $message }}</div>
+                        <div class="text-red-500 font-medium">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-span-2 lg:col-span-1">
@@ -44,16 +47,13 @@
                     <div x-ref="bgColorPicker" id="bg-color-picker" class="mt-1 h-8 w-full border border-black" :style="`background-color: ${bgColor};`"></div>
                     <p x-text="bgColor"></p>
                     @error('bg-color')
-                    <div class="font-medium text-red-500">{{ $message }}</div>
+                        <div class="text-red-500 font-medium">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-span-2 lg:col-span-1">
                     <label class="block text-sm font-medium text-gray-700">Szöveg színe</label>
                     <div x-ref="textColorPicker" id="text-color-picker" class="mt-1 h-8 w-full border border-black" :style="`background-color: ${textColor};`"></div>
                     <p x-text="textColor"></p>
-                    @error('text-color')
-                    <div class="font-medium text-red-500">{{ $message }}</div>
-                    @enderror
                 </div>
             </div>
             <div class="col-span-4 lg:col-span-2">

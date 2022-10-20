@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [PostController::class, 'index']);
+Route::get('/', [PostController::class, 'index']) -> name('home');
 
 Route::resource('posts', PostController::class);
 Route::resource('categories', CategoryController::class);
