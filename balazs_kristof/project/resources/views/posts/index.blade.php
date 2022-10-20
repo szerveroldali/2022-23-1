@@ -24,7 +24,6 @@
     <div class="row mt-3">
         <div class="col-12 col-lg-9">
             <div class="row">
-                {{-- TODO: Read posts from DB --}}
                 @forelse ($posts as $post)
                     <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-self-stretch">
                         <div class="card w-100">
@@ -34,35 +33,29 @@
                                 alt="Post cover"
                             >
                             <div class="card-body">
-                                {{-- TODO: Title --}}
                                 <h5 class="card-title mb-0">{{ $post->title }}</h5>
                                 <p class="small mb-0">
                                     <span class="me-2">
                                         <i class="fas fa-user"></i>
-                                        {{-- TODO: Author --}}
                                         <span>By {{ $post->user->name }}</span>
                                     </span>
 
                                     <span>
                                         <i class="far fa-calendar-alt"></i>
-                                        {{-- TODO: Date --}}
                                         <span>{{ $post->created_at }}</span>
                                     </span>
                                 </p>
 
-                                {{-- TODO: Read post categories from DB --}}
                                 @foreach ($post->categories as $category)
                                     <a href="/categories/{{ $category->id }}" class="text-decoration-none">
                                         <span class="badge" style="background-color: {{ $category->color}};">{{ $category->name }}</span>
                                     </a>
                                 @endforeach
 
-                                {{-- TODO: Short desc --}}
                                 <p class="card-text mt-1">{{ $post->desc }}</p>
                             </div>
                             <div class="card-footer">
-                                {{-- TODO: Link --}}
-                                <a href="/posts/{{ $post->id }}" class="btn btn-primary">
+                                <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary">
                                     <span>View post</span> <i class="fas fa-angle-right"></i>
                                 </a>
                             </div>
@@ -90,9 +83,8 @@
                             Categories
                         </div>
                         <div class="card-body">
-                            {{-- TODO: Read categories from DB --}}
                             @foreach ($categories as $category)
-                                <a href="/categories/{{ $category->id }}" class="text-decoration-none">
+                                <a href="{{ route('categories.show', $category->id) }}" class="text-decoration-none">
                                     <span class="badge" style="background-color: {{ $category->color }}">{{ $category->name }}</span>
                                 </a>
                             @endforeach
@@ -108,7 +100,6 @@
                         <div class="card-body">
                             <div class="small">
                                 <ul class="fa-ul">
-                                    {{-- TODO: Read stats from DB --}}
                                     <li><span class="fa-li"><i class="fas fa-user"></i></span>Users: {{ $user_count }}</li>
                                     <li><span class="fa-li"><i class="fas fa-layer-group"></i></span>Categories: {{ $categories->count() }}</li>
                                     <li><span class="fa-li"><i class="fas fa-file-alt"></i></span>Posts: {{ $posts->count() }}</li>

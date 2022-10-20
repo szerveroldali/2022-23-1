@@ -19,6 +19,10 @@ Route::get('/', function() {
     return redirect()->route('posts.index');
 });
 
+Route::get('/home', function() {
+    return redirect()->route('posts.index');
+});
+
 Route::resource('posts', PostController::class);
 Route::resource('categories', CategoryController::class);
 

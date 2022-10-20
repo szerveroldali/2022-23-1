@@ -39,10 +39,6 @@ class CategoryController extends Controller
         $validated = $request->validate(
             [
                 'name' => 'required|max:32',
-                /*'style' => [
-                    'required',
-                    Rule::in(['primary', 'secondary', 'danger', 'warning', 'info', 'dark']),
-                ],*/
                 'color' => 'required|size:7',
             ]
         );
@@ -63,8 +59,10 @@ class CategoryController extends Controller
     public function show($id)
     {
         return view('categories.show', [
+            'post_count' => \App\Models\Post::count(),
             'category' => \App\Models\Category::find($id),
             'categories' => \App\Models\Category::all(),
+            'user_count' => \App\Models\User::count(),
         ]);
     }
 
@@ -76,7 +74,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('categories.edit', ['category' => \App\Models\Category::find($id)]);
     }
 
     /**
@@ -88,7 +86,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate(
+            [
+                'name' => 'required|max:32',
+                'color' => 'required|size:7',
+            ]
+        );
+
+        $category = \App\Models\Category::find($id);
+        $category->update($validated);
+
+        Session::flash('category_updated');
+
+        return redirect()->route('categories.edit', ['category' => \App\Models\Category::find($id)]);
     }
 
     /**
