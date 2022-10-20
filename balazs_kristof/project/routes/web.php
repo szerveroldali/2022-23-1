@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,32 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
+Route::get('/', function() {
+    return redirect()->route('posts.index');
 });
 
-Route::get('/posts', [\App\Http\Controllers\PostController::class, 'index']);
-
-Route::get('/posts/create', function () {
-    return view('posts.create');
-});
-
-Route::get('/posts/{id}', [\App\Http\Controllers\PostController::class, 'show']);
-
-
-Route::get('/posts/x/edit', function () {
-    return view('posts.edit');
-});
-
-// -----------------------------------------
-
-Route::get('/categories/create', function () {
-    return view('categories.create');
-});
-
-Route::get('/categories/x', function () {
-    return view('categories.show');
-});
+Route::resource('posts', PostController::class);
+Route::resource('categories', CategoryController::class);
 
 // -----------------------------------------
 

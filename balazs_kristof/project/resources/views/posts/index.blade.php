@@ -13,7 +13,7 @@
 
                 <a href="#" role="button" class="btn btn-sm btn-success mb-1"><i class="fas fa-plus-circle"></i> Create post</a>
 
-                <a href="#" role="button" class="btn btn-sm btn-success mb-1"><i class="fas fa-plus-circle"></i> Create category</a>
+                <a href="/categories/create" role="button" class="btn btn-sm btn-success mb-1"><i class="fas fa-plus-circle"></i> Create category</a>
 
             </div>
         </div>
@@ -46,13 +46,13 @@
                                     <span>
                                         <i class="far fa-calendar-alt"></i>
                                         {{-- TODO: Date --}}
-                                        <span>01/01/2022</span>
+                                        <span>{{ $post->created_at }}</span>
                                     </span>
                                 </p>
 
                                 {{-- TODO: Read post categories from DB --}}
                                 @foreach ($post->categories as $category)
-                                    <a href="#" class="text-decoration-none">
+                                    <a href="/categories/{{ $category->id }}" class="text-decoration-none">
                                         <span class="badge" style="background-color: {{ $category->color}};">{{ $category->name }}</span>
                                     </a>
                                 @endforeach
@@ -62,7 +62,7 @@
                             </div>
                             <div class="card-footer">
                                 {{-- TODO: Link --}}
-                                <a href="#" class="btn btn-primary">
+                                <a href="/posts/{{ $post->id }}" class="btn btn-primary">
                                     <span>View post</span> <i class="fas fa-angle-right"></i>
                                 </a>
                             </div>
@@ -91,9 +91,9 @@
                         </div>
                         <div class="card-body">
                             {{-- TODO: Read categories from DB --}}
-                            @foreach (['primary', 'secondary','danger', 'warning', 'info', 'dark'] as $category)
-                                <a href="#" class="text-decoration-none">
-                                    <span class="badge bg-{{ $category }}">{{ $category }}</span>
+                            @foreach ($categories as $category)
+                                <a href="/categories/{{ $category->id }}" class="text-decoration-none">
+                                    <span class="badge" style="background-color: {{ $category->color }}">{{ $category->name }}</span>
                                 </a>
                             @endforeach
                         </div>
@@ -109,9 +109,9 @@
                             <div class="small">
                                 <ul class="fa-ul">
                                     {{-- TODO: Read stats from DB --}}
-                                    <li><span class="fa-li"><i class="fas fa-user"></i></span>Users: N/A</li>
-                                    <li><span class="fa-li"><i class="fas fa-layer-group"></i></span>Categories: N/A</li>
-                                    <li><span class="fa-li"><i class="fas fa-file-alt"></i></span>Posts: N/A</li>
+                                    <li><span class="fa-li"><i class="fas fa-user"></i></span>Users: {{ $user_count }}</li>
+                                    <li><span class="fa-li"><i class="fas fa-layer-group"></i></span>Categories: {{ $categories->count() }}</li>
+                                    <li><span class="fa-li"><i class="fas fa-file-alt"></i></span>Posts: {{ $posts->count() }}</li>
                                 </ul>
                             </div>
                         </div>

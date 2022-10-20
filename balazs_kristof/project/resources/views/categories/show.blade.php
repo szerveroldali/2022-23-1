@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row justify-content-between">
         <div class="col-12 col-md-8">
-            <h1>Posts for <span class="badge bg-primary">given category</span></h1>
+            <h1>Posts for <span class="badge" style="background-color: {{ $category->color }}">{{ $category->name }}</span></h1>
         </div>
         <div class="col-12 col-md-4">
             <div class="float-lg-end">
@@ -61,7 +61,7 @@
             <div class="row">
                 {{-- TODO: Read posts from DB --}}
 
-                @forelse ([1,2,3,4,5] as $post)
+                @forelse ($category->posts as $post)
                     <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-self-stretch">
                         <div class="card w-100">
                             <img
@@ -71,12 +71,12 @@
                             >
                             <div class="card-body">
                                 {{-- TODO: Title --}}
-                                <h5 class="card-title mb-0">Post title</h5>
+                                <h5 class="card-title mb-0">{{ $post->title }}</h5>
                                 <p class="small mb-0">
                                     <span class="me-2">
                                         <i class="fas fa-user"></i>
                                         {{-- TODO: Author --}}
-                                        <span>By Author</span>
+                                        <span>By {{ $post->user->name }} </span>
                                     </span>
 
                                     <span>
@@ -127,9 +127,9 @@
                         </div>
                         <div class="card-body">
                             {{-- TODO: Read categories from DB --}}
-                            @foreach (['primary', 'secondary','danger', 'warning', 'info', 'dark'] as $category)
-                                <a href="#" class="text-decoration-none">
-                                    <span class="badge bg-{{ $category }}">{{ $category }}</span>
+                            @foreach ($categories as $category)
+                                <a href="/categories/{{ $category->id }}" class="text-decoration-none">
+                                    <span class="badge" style="background-color: {{ $category->color }}">{{ $category->name }}</span>
                                 </a>
                             @endforeach
                         </div>

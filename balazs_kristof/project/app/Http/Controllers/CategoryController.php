@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 
-class PostController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,11 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('posts.index', [
-            'posts' => \App\Models\Post::all(),
-            'categories' => \App\Models\Category::all(),
-            'user_count' => \App\Models\User::count(),
-        ]);
+        //
     }
 
     /**
@@ -27,7 +25,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
@@ -38,7 +36,22 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate(
+            [
+                'name' => 'required|max:32',
+                /*'style' => [
+                    'required',
+                    Rule::in(['primary', 'secondary', 'danger', 'warning', 'info', 'dark']),
+                ],*/
+                'color' => 'required|size:7',
+            ]
+        );
+
+        \App\Models\Category::factory()->create($validated);
+
+        Session::flash('category_created');
+
+        return redirect()->route('categories.create');
     }
 
     /**
@@ -49,8 +62,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        return view('posts.show', [
-            'post' => \App\Models\Post::find($id)
+        return view('categories.show', [
+            'category' => \App\Models\Category::find($id),
+            'categories' => \App\Models\Category::all(),
         ]);
     }
 
