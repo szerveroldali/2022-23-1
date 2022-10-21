@@ -42,7 +42,7 @@ class CategoryController extends Controller
                 'name' => 'required|min:3',
                 'style' => [
                     'required',
-                    Rule::in(['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']),
+                    Rule::in(Category::$style),
                 ]
             ],
             [
