@@ -30,7 +30,13 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-self-stretch">
                         <div class="card w-100">
                             <img
-                                src="{{ asset('images/default_post_cover.jpg') }}"
+                                src="{{
+                                    asset(
+                                        $post->cover_image_path
+                                            ? 'storage/' . $post->cover_image_path
+                                            : 'images/default_post_cover.jpg'
+                                    )
+                                }}"
                                 class="card-img-top"
                                 alt="Post cover"
                             >

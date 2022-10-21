@@ -1,6 +1,6 @@
 @extends('layouts.app')
 {{-- TODO: Post title --}}
-@section('title', 'View post: ')
+@section('title', 'View post: ' . $post->title)
 
 @section('content')
 <div class="container">
@@ -10,30 +10,30 @@
     <div class="row justify-content-between">
         <div class="col-12 col-md-8">
             {{-- TODO: Title --}}
-            <h1>Post title</h1>
+            <h1>{{ $post->title }}</h1>
 
             <p class="small text-secondary mb-0">
                 <i class="fas fa-user"></i>
                 {{-- TODO: Author --}}
-                <span>By Author</span>
+                <span>By {{ $post->author ? $post->author->name : "Unknown" }}</span>
             </p>
             <p class="small text-secondary mb-0">
                 <i class="far fa-calendar-alt"></i>
                 {{-- TODO: Date --}}
-                <span>01/01/2022</span>
+                <span>{{ $post->created_at }}</span>
             </p>
 
             <div class="mb-2">
                 {{-- TODO: Read post categories from DB --}}
-                @foreach (['primary', 'secondary','danger', 'warning', 'info', 'dark'] as $category)
-                    <a href="#" class="text-decoration-none">
-                        <span class="badge bg-{{ $category }}">{{ $category }}</span>
+                @foreach ($post->categories as $category)
+                    <a href="{{ route('categories.show', $category) }}" class="text-decoration-none">
+                        <span class="badge bg-{{ $category->style }}">{{ $category->name }}</span>
                     </a>
                 @endforeach
             </div>
 
             {{-- TODO: Link --}}
-            <a href="#"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
+            <a href="{{ route('posts.index') }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
 
         </div>
 
@@ -85,14 +85,21 @@
     <img
         id="cover_preview_image"
         {{-- TODO: Cover --}}
-        src="{{ asset('images/default_post_cover.jpg') }}"
+        src="{{
+            asset(
+                $post->cover_image_path
+                    ? 'storage/' . $post->cover_image_path
+                    : 'images/default_post_cover.jpg'
+            )
+        }}"
         alt="Cover preview"
+        width="350px"
         class="my-3"
     >
 
     <div class="mt-3">
         {{-- TODO: Post paragraphs --}}
-         Lorem ipsum
+        {!! nl2br(e($post->text)) !!}
     </div>
 </div>
 @endsection

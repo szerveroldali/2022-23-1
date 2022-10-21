@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -39,12 +40,21 @@ class CategoryController extends Controller
     {
         $validated = $request->validate(
             [
-                'name' => 'required|min:3',
-                'style' => 'required',
+                //'name' => 'required|min:3',
+                'name' => [
+                    'required',
+                    'min:3',
+                ],
+                'style' => [
+                    'required',
+                    // Benne van-e a valid style-ok listájában?
+                    Rule::in(Category::$styles)
+                ]
             ],
             [
                 'required' => 'This field is required',
-                'name.required' => 'Name is required'
+                'name.required' => 'Name is required',
+                'style.in' => 'Invalid style',
             ]
         );
 
