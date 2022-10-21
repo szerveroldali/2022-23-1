@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -26,7 +27,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('categories.create', [
+            'styles' => Category::$styles,
+        ]);
     }
 
     /**
@@ -40,7 +43,12 @@ class CategoryController extends Controller
         $validated = $request->validate(
             [
                 'name' => 'required|min:3',
-                'style' => 'required|in:primary,secondary,danger,warning,info,dark',
+                //'style' => 'required|in:primary,secondary,danger,warning,info,dark',
+                'style' => [
+                    'required',
+                    //'in:primary,secondary,danger,warning,info,dark'
+                    Rule::in(Category::$styles),
+                ],
             ],
             // Egyéni hibaüzenetek:
             [
