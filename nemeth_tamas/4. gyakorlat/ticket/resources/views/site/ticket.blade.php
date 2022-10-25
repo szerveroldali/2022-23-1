@@ -49,12 +49,23 @@
     @endforeach
     <hr>
     <h2>Új hozzászólás írása</h2>
-    <form>
+    <form action="{{ route('tickets.newComment', ['ticket' => $ticket->id]) }}" method="post">
+        @csrf
         <div class="mb-3">
-            <textarea class="form-control" name="text" id="text" cols="30" rows="10" placeholder="Hozzászólás..."></textarea>
+            <textarea class="form-control @error('text') is-invalid @enderror" name="text" id="text" cols="30" rows="10" placeholder="Hozzászólás...">{{ old('text') }}</textarea>
+            @error('text')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
         <div class="mb-3">
-            <input type="file" class="form-control" id="file">
+            <input type="file" class="form-control" id="file" @error('file') is-invalid @enderror>
+            @error('file')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
         <div class="row">
             <button type="submit" class="btn btn-primary">Küldés</button>

@@ -49,7 +49,8 @@
     @endforeach
     <hr>
     <h2>Új hozzászólás írása</h2>
-    <form>
+    <form action="{{ route('tickets.newComment', ['ticket' => $ticket->id]) }}" method="post">
+        @csrf
         <div class="mb-3">
             <textarea class="form-control" name="text" id="text" cols="30" rows="10" placeholder="Hozzászólás..."></textarea>
         </div>

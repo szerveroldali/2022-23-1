@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\TicketController;
-use App\Models\User;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,11 +21,11 @@ Route::get('tickets/closed', [TicketController::class, 'closed'])->middleware(['
 Route::get('tickets/all', [TicketController::class, 'all'])->middleware('auth')->name('tickets.all');
 // Hibajegyekhez tartozó összes végpont (CRUD)
 Route::resource('tickets', TicketController::class)->middleware(['auth']);
+// Új komment
+Route::post('tickets/{ticket}/comment', [TicketController::class, 'newComment'])->middleware('auth')->name('tickets.newComment');
 
 // Felhasználó
-Route::get('users', function () {
-    return view('site.users', ['users' => User::all()]); // TODO: csak admin férhet hozzá
-})->middleware('auth')->name('users.index');
+Route::get('users', [UserController::class, 'index'])->middleware('auth')->name('users.index');
 
 Route::get('/', function () {
     return redirect()->route('tickets.index');

@@ -10,15 +10,15 @@ class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * TODO: Legyen lapozható! (pagination)
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $tickets = Auth::user()->tickets->where('done', false)->sortByDesc(function ($ticket) {
-            return $ticket->comments->sortByDesc('created_at')->first();
-        });
+        $tickets = Auth::user()->tickets()->where('done', false)->paginate(5);
+        // $tickets = Auth::user()->tickets->where('done', false)->sortByDesc(function ($ticket) {
+        //     return $ticket->comments->sortByDesc('created_at')->first();
+        // });
         return view('site.tickets', ['tickets' => $tickets]);
     }
 
@@ -46,7 +46,17 @@ class TicketController extends Controller
             'text' => 'required|string|max:1000',
             'file' => 'file'
         ]);
-        dd($validated);
+
+        $ticket = Ticket::create($validated);
+
+        $ticket->users()->attach(Auth::id(), ['is_submitter' => true, 'is_responsible' => true]);
+
+        $ticket->comments()->create([
+            'text' => $validated['text'],
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->route('tickets.show', ['ticket' => $ticket->id]);
     }
 
     /**
@@ -100,25 +110,49 @@ class TicketController extends Controller
 
     /**
      * Display a listing of the closed tickets.
-     * TODO: Legyen lapozható! (pagination)
      */
     public function closed()
     {
-        $tickets = Auth::user()->tickets->where('done', true)->sortByDesc(function ($ticket) {
-            return $ticket->comments->sortByDesc('created_at')->first();
-        });
+        $tickets = Auth::user()->tickets()->where('done', true)->paginate(5);
+
+        // $tickets = Auth::user()->tickets->where('done', true)->sortByDesc(function ($ticket) {
+        //     return $ticket->comments->sortByDesc('created_at')->first();
+        // });
         return view('site.tickets', ['tickets' => $tickets]);
     }
 
     /**
      * Display a listing of all tickets.
-     * TODO: Csak admin férjen hozzá!
      */
     public function all()
     {
-        $tickets = Ticket::all()->sortByDesc(function ($ticket) {
-            return $ticket->comments->sortByDesc('created_at')->first();
-        });
+        if (!Auth::user()->is_admin) {
+            abort(401);
+        }
+        $tickets = Ticket::paginate(5);
+        // $tickets = Ticket::all()->sortByDesc(function ($ticket) {
+        //     return $ticket->comments->sortByDesc('created_at')->first();
+        // });
         return view('site.tickets', ['tickets' => $tickets]);
+    }
+
+    public function newComment(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'text' => 'required|string|max:1000',
+            'file' => 'file'
+        ]);
+
+        $ticket = Ticket::findOrFail($id);
+        if(!$ticket->users->contains(Auth::id()) && !Auth::user()->is_admin) {
+            abort(401);
+        }
+
+        $ticket->comments()->create([
+            'text' => $validated['text'],
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect()->route('tickets.show', ['ticket' => $ticket->id]);
     }
 }
