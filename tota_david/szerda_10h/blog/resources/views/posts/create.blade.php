@@ -6,14 +6,8 @@
     <h1>Create post</h1>
     <div class="mb-4">
         {{-- TODO: Link --}}
-        <a href="#"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
+        <a href="{{ route('posts.index') }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
     </div>
-
-    @if (Session::has('post_created'))
-        <div class="alert alert-success" role="alert">
-            Post ({{ Session::get('post_created') }}) created!
-        </div>
-    @endif
 
     {{-- TODO: action, method, enctype --}}
     <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
@@ -94,8 +88,8 @@
                     <p>No categories found</p>
                 @endforelse
 
-                {{ in_array(strval(1), old('categories', [])) }}
-                {{ json_encode( old('categories', [])) }}
+                {{-- {{ in_array(strval(1), old('categories', [])) }}
+                {{ json_encode( old('categories', [])) }} --}}
 
                 @foreach ($errors->get('categories.*') as $message)
                     <div class="text-danger">

@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
 
         $categories = Category::factory(rand(3, 7))->create();
 
-        $posts = Post::factory(rand(3, 7))->create();
+        $posts = Post::factory(rand(20, 25))->create();
 
         // Relációk:
 
