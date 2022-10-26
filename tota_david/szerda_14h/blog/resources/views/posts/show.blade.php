@@ -6,6 +6,17 @@
 <div class="container">
 
     {{-- TODO: Session flashes --}}
+    @if (Session::has('post_created'))
+        <div class="alert alert-success" role="alert">
+            Post ({{ Session::get('post_created') }}) successfully created!
+        </div>
+    @endif
+
+    @if (Session::has('post_updated'))
+        <div class="alert alert-success" role="alert">
+            Post ({{ Session::get('post_updated') }}) successfully updated!
+        </div>
+    @endif
 
     <div class="row justify-content-between">
         <div class="col-12 col-md-8">
@@ -41,11 +52,15 @@
             <div class="float-lg-end">
 
                 {{-- TODO: Links, policy --}}
-                <a role="button" class="btn btn-sm btn-primary" href="#"><i class="far fa-edit"></i> Edit post</a>
+                @can('update', $post)
+                    <a role="button" class="btn btn-sm btn-primary" href="{{ route('posts.edit', $post) }}"><i class="far fa-edit"></i> Edit post</a>
+                @endcan
 
-                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm-modal"><i class="far fa-trash-alt">
-                    <span></i> Delete post</span>
-                </button>
+                @can('delete', $post)
+                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm-modal"><i class="far fa-trash-alt">
+                        <span></i> Delete post</span>
+                    </button>
+                @endcan
 
             </div>
         </div>
@@ -61,7 +76,7 @@
                 </div>
                 <div class="modal-body">
                     {{-- TODO: Title --}}
-                    Are you sure you want to delete post <strong>N/A</strong>?
+                    Are you sure you want to delete post <strong>{{ $post->title }}</strong>?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -74,8 +89,9 @@
                     </button>
 
                     {{-- TODO: Route, directives --}}
-                    <form id="delete-post-form" action="#" method="POST" class="d-none">
-
+                    <form id="delete-post-form" action="{{ route('posts.destroy', $post) }}" method="POST" class="d-none">
+                        @method('DELETE')
+                        @csrf
                     </form>
                 </div>
             </div>

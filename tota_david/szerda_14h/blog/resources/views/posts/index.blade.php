@@ -20,6 +20,11 @@
     </div>
 
     {{-- TODO: Session flashes --}}
+    @if (Session::has('post_deleted'))
+        <div class="alert alert-success" role="alert">
+            Post ({{ Session::get('post_deleted') }}) successfully created!
+        </div>
+    @endif
 
     <div class="row mt-3">
         <div class="col-12 col-lg-9">
@@ -86,6 +91,7 @@
 
             <div class="d-flex justify-content-center">
                 {{-- TODO: Pagination --}}
+                {{ $posts->links() }}
             </div>
 
         </div>
@@ -118,7 +124,7 @@
                                     {{-- TODO: Read stats from DB --}}
                                     <li><span class="fa-li"><i class="fas fa-user"></i></span>Users: {{ $users_count }}</li>
                                     <li><span class="fa-li"><i class="fas fa-layer-group"></i></span>Categories: {{ $categories->count() }}</li>
-                                    <li><span class="fa-li"><i class="fas fa-file-alt"></i></span>Posts: {{ $posts->count() }}</li>
+                                    <li><span class="fa-li"><i class="fas fa-file-alt"></i></span>Posts: {{ $posts->total() }}</li>
                                 </ul>
                             </div>
                         </div>
