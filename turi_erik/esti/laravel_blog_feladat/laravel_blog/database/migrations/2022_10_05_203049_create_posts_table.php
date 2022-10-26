@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('image_filename')->nullable();
             $table->boolean('hidden')->default(false);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

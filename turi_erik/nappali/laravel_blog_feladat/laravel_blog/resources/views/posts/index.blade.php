@@ -7,20 +7,32 @@
         <div>
             <h1 class="font-bold my-4 text-4xl">Szerveroldali Blog</h1>
         </div>
+        @auth
         <div class="flex items-center gap-2 lg:justify-end">
             <a href="{{ route('categories.create') }}" class="bg-green-500 hover:bg-green-700 px-2 py-1 text-white"><i
                     class="fas fa-plus-circle"></i> Új kategória</a>
             <a href="{{ route('posts.create') }}" class="bg-green-500 hover:bg-green-700 px-2 py-1 text-white"><i
                     class="fas fa-plus-circle"></i> Új bejegyzés</a>
         </div>
+        @endauth
     </div>
     <div class="grid grid-cols-4 gap-6">
         <div class="col-span-4 lg:col-span-3">
             <h2 class="font-semibold text-3xl my-2">Minden bejegyzés</h2>
             <div class="grid grid-cols-3 gap-3">
+                @if (Session::has('post-created'))
+                <div class="col-span-3 bg-green-200 rounded-lg shadow-md p-1 mb-2 text-center">
+                    A(z) {{ Session::get('post-created') }} című bejegyzés létrejött!
+                </div>
+                @endif
+
                 @foreach ($posts as $p)
                 <div class="col-span-3 lg:col-span-1">
+                    @if ($p -> image_filename === null)
                     <img src="https://www.ispreview.co.uk/wp-content/uploads/london_city_2017_uk.jpg">
+                    @else
+                    <img src="{{ Storage::url('images/' . $p -> image_filename) }}">
+                    @endif
                     <div class="px-2.5 py-2 border-r border-l border-b border-gray-400 ">
                         <h3 class="text-xl mb-0.5 font-semibold">
                             {{ $p -> title }}
@@ -31,13 +43,14 @@
                         <p class="text-gray-600 mt-1">
                             {{ Str::limit($p -> content, 100) }}
                         </p>
-                        <button
+                        <a href="{{ route('posts.show', $p) }}"
                             class="bg-blue-500 hover:bg-blue-600 px-1.5 py-1 text-white mt-3 font-semibold">Elolvasom <i
-                                class="fas fa-angle-right"></i></button>
+                                class="fas fa-angle-right"></i></a>
                     </div>
                 </div>
                 @endforeach
             </div>
+            {{ $posts -> links() }}
         </div>
         <div class="col-span-4 lg:col-span-1">
             <h2 class="font-semibold text-3xl my-2">Menü</h2>
@@ -69,7 +82,7 @@
                     </h3>
                     <ul class="fa-ul">
                         <li><span class="fa-li"><i class="fas fa-user"></i></span>Felhasználók: {{ $user_count }}</li>
-                        <li><span class="fa-li"><i class="fas fa-file-alt"></i></span>Bejegyzések: {{ $posts -> count() }}</li>
+                        <li><span class="fa-li"><i class="fas fa-file-alt"></i></span>Bejegyzések: {{ $post_count }}</li>
                         <li><span class="fa-li"><i class="fas fa-comments"></i></span>Hozzászólások: {{ $comment_count }}</li>
                     </ul>
                 </div>

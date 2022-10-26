@@ -7,6 +7,9 @@ use App\Models\Category;
 use App\Models\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -18,9 +21,10 @@ class PostController extends Controller
     public function index()
     {
         return view('posts.index', [
-            'posts' => Post::with('author') -> get(),
+            'posts' => Post::with('author') -> paginate(9),
             'categories' => Category::all(),
             'user_count' => User::count(),
+            'post_count' => Post::count(),
             'comment_count' => 0
         ]);
     }
@@ -32,6 +36,8 @@ class PostController extends Controller
      */
     public function create()
     {
+        if (!Auth::user())
+            return redirect() -> route('login');
         return view('posts.create', ['categories' => Category::all()]);
     }
 
@@ -43,17 +49,28 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::user())
+            return abort(403);
+
         $validated = $request -> validate(
             ['categories' => 'nullable',
             'categories.*' => 'integer|distinct|exists:categories,id',
             'title' => 'required',
-            'content' => 'required' ]
+            'content' => 'required',
+            'image_file' => 'nullable|image' ]
         );
 
-        $p = Post::create($validated);
-        $p -> author() -> associate(User::all() -> random()) -> save();
-        $p -> categories() -> sync($request -> categories);
+        if ($request -> hasFile('image_file')){
+            $file = $request -> file('image_file');
+            $fname = $file -> hashName();
+            Storage::disk('public') -> put('images/' . $fname, $file -> get());
+            $validated['image_filename'] = $fname;
+        }
 
+        $p = Post::create($validated);
+        $p -> author() -> associate(Auth::user()) -> save();
+        $p -> categories() -> sync($request -> categories);
+        Session::flash('post-created', $p -> title);
         return redirect() -> route('posts.index');
     }
 
@@ -65,7 +82,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', ['post' => $post]);
     }
 
     /**
@@ -99,6 +116,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        //if (Auth::user() !== null && Auth::id() == $post -> author -> id)
+        $this -> authorize('delete', $post);
+        $post -> delete();
+        return redirect() -> route('home');
     }
 }
