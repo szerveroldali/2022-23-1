@@ -28,7 +28,7 @@ class PostFactory extends Factory
         return [
             // Str::ucfirst(implode(" ", $faker->words(rand(2,6))))
             'title' => rtrim(fake()->sentence(), '.'),
-            'text' => implode('\n\n', fake()->paragraphs(rand(3,7))),
+            'text' => fake()->paragraphs(rand(3,7), true),
             'description' => fake()->sentence(),
         ];
     }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('priority', [0,1,2,3]);
             $table->boolean('done')->default(false);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

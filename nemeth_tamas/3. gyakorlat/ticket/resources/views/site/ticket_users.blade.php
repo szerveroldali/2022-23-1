@@ -35,12 +35,14 @@
                             {{ $user->name }} |
                             <span class="text-secondary">{{ $user->email }}</span>
                         </div>
-                        <form action="" method="post">
+                        <form action="{{ route('tickets.addUser', ['ticket' => $ticket->id, 'user' => $user->id]) }}" method="post">
+                            @csrf
                             <div class="form-check form-switch pe-3">
                                 <input
                                     type="checkbox"
                                     class="form-check-input"
                                     role="switch"
+                                    name="is_responsible"
                                     id="{{ $user->id }}"
                                     value="{{ $user->id }}"
                                 />
@@ -62,14 +64,18 @@
                             {{ $user->name }} |
                             <span class="text-secondary">{{ $user->email }}</span>
                         </div>
-                        <form action="" method="post">
+                        <form action="{{ route('tickets.deleteUser', ['ticket' => $ticket->id, 'user' => $user->id]) }}" method="post">
+                            @csrf
+                            @method('delete')
                             <div class="form-check form-switch pe-3">
                                 <input
                                     type="checkbox"
                                     class="form-check-input"
                                     role="switch"
+                                    name="is_responsible"
                                     id="{{ $user->id }}"
-                                    value="{{ $user->id }}"
+                                    disabled
+                                    {{ $user->pivot->is_responsible == 1 ? 'checked' : '' }}
                                 />
                             </div>
                             <button class="btn btn-primary" type="submit">

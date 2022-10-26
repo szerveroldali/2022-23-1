@@ -3,6 +3,12 @@
 
 @section('content')
 <div class="container">
+    @if (Session::has('post_deleted'))
+        <div class="alert alert-success" role="alert">
+            Post ({{ Session::get('post_deleted') }}) successfully deleted!
+        </div>
+    @endif
+
     <div class="row justify-content-between">
         <div class="col-12 col-md-8">
             <h1>All posts</h1>
@@ -30,7 +36,11 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-self-stretch">
                         <div class="card w-100">
                             <img
-                                src="{{ asset('images/default_post_cover.jpg') }}"
+                                src="{{
+                                    $post->cover_image_path
+                                        ? asset('storage/' . $post->cover_image_path)
+                                        : asset('images/default_post_cover.jpg')
+                                }}"
                                 class="card-img-top"
                                 alt="Post cover"
                             >
@@ -80,6 +90,7 @@
 
             <div class="d-flex justify-content-center">
                 {{-- TODO: Pagination --}}
+                {{ $posts->links() }}
             </div>
 
         </div>
@@ -112,7 +123,7 @@
                                     {{-- TODO: Read stats from DB --}}
                                     <li><span class="fa-li"><i class="fas fa-user"></i></span>Users: {{ $users_count }}</li>
                                     <li><span class="fa-li"><i class="fas fa-layer-group"></i></span>Categories: {{ $categories->count() }}</li>
-                                    <li><span class="fa-li"><i class="fas fa-file-alt"></i></span>Posts: {{ $posts->count() }}</li>
+                                    <li><span class="fa-li"><i class="fas fa-file-alt"></i></span>Posts: {{ $posts->total() }}</li>
                                 </ul>
                             </div>
                         </div>

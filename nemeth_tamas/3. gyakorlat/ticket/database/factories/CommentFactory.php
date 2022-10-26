@@ -18,8 +18,8 @@ class CommentFactory extends Factory
     {
         return [
             'text' => fake()->sentence(),
-            'filename' => '/almafa.png',
-            'filename_hash' => '/almafa.png',
+            // 'filename' => '/almafa.png',
+            // 'filename_hash' => '/almafa.png',
         ];
     }
 }

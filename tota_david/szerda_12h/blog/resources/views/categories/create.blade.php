@@ -36,7 +36,7 @@
         <div class="form-group row mb-3">
             <label for="style" class="col-sm-2 col-form-label py-0">Style*</label>
             <div class="col-sm-10">
-                @foreach (['primary', 'secondary','danger', 'warning', 'info', 'dark'] as $style)
+                @foreach ($styles as $style)
                     <div class="form-check">
                         <input
                             class="form-check-input"

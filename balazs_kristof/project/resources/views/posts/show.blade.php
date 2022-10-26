@@ -1,6 +1,5 @@
 @extends('layouts.app')
-{{-- TODO: Post title --}}
-@section('title', 'View post: ')
+@section('title', 'View post: ' . $post->title)
 
 @section('content')
 <div class="container">
@@ -9,22 +8,18 @@
 
     <div class="row justify-content-between">
         <div class="col-12 col-md-8">
-            {{-- TODO: Title --}}
             <h1>{{ $post->title }}</h1>
 
             <p class="small text-secondary mb-0">
                 <i class="fas fa-user"></i>
-                {{-- TODO: Author --}}
                 <span>By {{ $post->user->name }}</span>
             </p>
             <p class="small text-secondary mb-0">
                 <i class="far fa-calendar-alt"></i>
-                {{-- TODO: Date --}}
-                <span>01/01/2022</span>
+                <span>{{ $post->created_at }}</span>
             </p>
 
             <div class="mb-2">
-                {{-- TODO: Read post categories from DB --}}
                 @foreach ($post->categories as $category)
                     <a href="#" class="text-decoration-none">
                         <span class="badge" style="background-color: {{ $category->color }}">{{ $category->name }}</span>
@@ -32,8 +27,7 @@
                 @endforeach
             </div>
 
-            {{-- TODO: Link --}}
-            <a href="#"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
+            <a href="{{ route('posts.index') }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
 
         </div>
 
@@ -60,8 +54,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{-- TODO: Title --}}
-                    Are you sure you want to delete post <strong>N/A</strong>?
+                    Are you sure you want to delete post <strong>{{ $post->title }}</strong>?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -91,7 +84,6 @@
     >
 
     <div class="mt-3">
-        {{-- TODO: Post paragraphs --}}
         {{ $post->text }}
     </div>
 </div>

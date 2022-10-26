@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 
@@ -40,73 +38,76 @@ class CategoryController extends Controller
     {
         $validated = $request->validate(
             [
-                //'name' => 'required|min:3',
-                'name' => [
-                    'required',
-                    'min:3',
-                ],
-                'style' => [
-                    'required',
-                    // Benne van-e a valid style-ok listájában?
-                    Rule::in(Category::$styles)
-                ]
-            ],
-            [
-                'required' => 'This field is required',
-                'name.required' => 'Name is required',
-                'style.in' => 'Invalid style',
+                'name' => 'required|max:32',
+                'color' => 'required|size:7',
             ]
         );
 
-        // Ide nem jut el a vezérlés invalid adatok esetén, tehát nyugodtan lehet db create
-        Category::factory()->create($validated);
+        \App\Models\Category::factory()->create($validated);
 
-        Session::flash("category_created", $validated['name']);
+        Session::flash('category_created');
 
-        return Redirect::route('categories.create');
+        return redirect()->route('categories.create');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        return view('categories.show', [
+            'post_count' => \App\Models\Post::count(),
+            'category' => \App\Models\Category::find($id),
+            'categories' => \App\Models\Category::all(),
+            'user_count' => \App\Models\User::count(),
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        return view('categories.edit', ['category' => \App\Models\Category::find($id)]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate(
+            [
+                'name' => 'required|max:32',
+                'color' => 'required|size:7',
+            ]
+        );
+
+        $category = \App\Models\Category::find($id);
+        $category->update($validated);
+
+        Session::flash('category_updated');
+
+        return redirect()->route('categories.edit', ['category' => \App\Models\Category::find($id)]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
         //
     }

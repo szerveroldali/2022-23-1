@@ -30,8 +30,8 @@
                         <td>
                             <div class="text-secondary">{{ $user->created_at }}</div>
                         </td>
-                        <td>TODO: nyitott feladatok száma</td>
-                        <td>TODO: lezárt feladatok száma</td>
+                        <td>{{ $user->tickets->where('done', false)->count() }}</td>
+                        <td>{{ $user->tickets->where('done', true)->count() }}</td>
                         <td>
                             <div class="btn-group">
                                 <button class="btn btn-danger" @if(!$user->is_admin) disabled @endif>

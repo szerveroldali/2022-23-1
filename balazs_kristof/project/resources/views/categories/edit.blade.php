@@ -1,26 +1,28 @@
 @extends('layouts.app')
-@section('title', 'Create category')
+@section('title', 'Edit category: ' . $category->name)
 
 @section('content')
 <div class="container">
-    <h1>Create category</h1>
+    <h1>Edit category <span class="badge" style="background-color: {{ $category->color }}">{{ $category->name }}</span></h1>
     <div class="mb-4">
         <a href="{{ route('posts.index') }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
     </div>
 
-    @if (Session::has('category_created'))
+    @if (Session::has('category_updated'))
         <div class="alert alert-success">
-            Category successfully created!
+            Category successfully updated!
         </div>
     @endif
 
-    <form method="post" action="{{ route('categories.store') }}">
+    {{-- TODO: action, method --}}
+    <form method="post" action="{{ route('categories.update', $category->id) }}">
         @csrf
+        @method('PATCH')
 
         <div class="form-group row mb-3">
             <label for="name" class="col-sm-2 col-form-label">Name*</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
+                <input type="text" class="form-control" id="name" name="name" value="{{ $category->name }}">
                 @error('name')
                     {{ $message }}
                 @enderror
@@ -30,7 +32,7 @@
         <div class="form-group row mb-3">
             <label for="color" class="col-sm-2 col-form-label">Color*</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="color" name="color" value="{{ old('color') }}">
+                <input type="text" class="form-control" id="color" name="color" value="{{ $category->color }}">
                 @error('color')
                     {{ $message }}
                 @enderror

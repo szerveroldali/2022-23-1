@@ -5,8 +5,7 @@
 <div class="container">
     <h1>Create post</h1>
     <div class="mb-4">
-        {{-- TODO: Link --}}
-        <a href="#"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
+        <a href="{{ route('posts.index') }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
     </div>
 
     {{-- TODO: action, method, enctype --}}
