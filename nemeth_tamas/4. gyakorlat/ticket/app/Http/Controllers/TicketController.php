@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,10 +51,20 @@ class TicketController extends Controller
         $ticket = Ticket::create($validated);
         $ticket->users()->attach(Auth::id(), ['is_submitter' => true, 'is_responsible' => true]);
 
-        $ticket->comments()->create([
-            'text' => $validated['text'],
-            'user_id' => Auth::id(),
-        ]);
+        if ($request->hasFile('attachment')) {
+            $path = $request->file('attachment')->store('public');
+            $ticket->comments()->create([
+                'text' => $validated['text'],
+                'user_id' => Auth::id(),
+                'filename' => $request->file('attachment')->getClientOriginalName(),
+                'filename_hash' => $path,
+            ]);
+        } else {
+            $ticket->comments()->create([
+                'text' => $validated['text'],
+                'user_id' => Auth::id(),
+            ]);
+        }
 
         return redirect()->route('tickets.show', ['ticket' => $ticket->id]);
     }
@@ -81,7 +92,11 @@ class TicketController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ticket = Ticket::findOrFail($id);
+        if(!$ticket->users->contains(Auth::id()) && !Auth::user()->is_admin) {
+            abort(401);
+        }
+        return view('site.ticket_form', ['ticket' => $ticket]);
     }
 
     /**
@@ -93,7 +108,16 @@ class TicketController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'priority' => 'required|integer|min:0|max:3',
+        ]);
+        $ticket = Ticket::findOrFail($id);
+        if(!$ticket->users->contains(Auth::id()) && !Auth::user()->is_admin) {
+            abort(401);
+        }
+        $ticket->update($validated);
+        return redirect()->route('tickets.show', ['ticket' => $ticket->id]);
     }
 
     /**
@@ -104,7 +128,12 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ticket = Ticket::findOrFail($id);
+        if(!$ticket->users->contains(Auth::id()) && !Auth::user()->is_admin) {
+            abort(401);
+        }
+        $ticket->delete();
+        return redirect()->route('tickets');
     }
 
     /**
@@ -145,11 +174,59 @@ class TicketController extends Controller
             abort(401);
         }
 
-        $ticket->comments()->create([
-            'text' => $validated['text'],
-            'user_id' => Auth::id(),
-        ]);
+        if ($request->hasFile('attachment')) {
+            $path = $request->file('attachment')->store('public');
+            $ticket->comments()->create([
+                'text' => $validated['text'],
+                'user_id' => Auth::id(),
+                'filename' => $request->file('attachment')->getClientOriginalName(),
+                'filename_hash' => $path,
+            ]);
+        } else {
+            $ticket->comments()->create([
+                'text' => $validated['text'],
+                'user_id' => Auth::id(),
+            ]);
+        }
 
         return redirect()->route('tickets.show', ['ticket' => $ticket->id]);
+    }
+
+    public function getUsers($id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        if(!$ticket->users->contains(Auth::id()) && !Auth::user()->is_admin) {
+            abort(401);
+        }
+        $usersOnTicket = $ticket->users;
+        $usersNotOnList = User::all()->diff($usersOnTicket);
+        return view('site.ticket_users', ['usersOnTicket' => $usersOnTicket, 'usersNotOnList' => $usersNotOnList, 'ticket' => $ticket]);
+    }
+
+    public function addUser(Request $request, $ticketId, $userId)
+    {
+        $validated = $request->validate(['is_responsible' => 'nullable|integer|exists:App\Models\User,id']);
+        $ticket = Ticket::findOrFail($ticketId);
+        if(!$ticket->users->contains(Auth::id()) && !Auth::user()->is_admin) {
+            abort(401);
+        }
+        $user = User::findOrFail($userId);
+        if (isset($validated['is_responsible'])) {
+            $ticket->users()->attach($user, ['is_responsible' => true]);
+        } else {
+            $ticket->users()->attach($user);
+        }
+        return redirect()->route('tickets.getUsers', ['ticket' => $ticket->id]);
+    }
+
+    public function deleteUser($ticketId, $userId)
+    {
+        $ticket = Ticket::findOrFail($ticketId);
+        if(!$ticket->users->contains(Auth::id()) && !Auth::user()->is_admin) {
+            abort(401);
+        }
+        $user = User::findOrFail($userId);
+        $ticket->users()->detach($user);
+        return redirect()->route('tickets.getUsers', ['ticket' => $ticket->id]);
     }
 }

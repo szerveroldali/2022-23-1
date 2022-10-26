@@ -25,6 +25,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('tickets', TicketController::class);
     // Új komment
     Route::post('tickets/{ticket}/comment', [TicketController::class, 'newComment'])->name('tickets.newComment');
+    // Felhasználók listája egy ticket-nél
+    Route::get('tickets/{ticket}/users', [TicketController::class, 'getUsers'])->name('tickets.getUsers');
+    // Felhasználó hozzáadása ticket-hez
+    Route::post('tickets/{ticket}/users/{user}', [TicketController::class, 'addUser'])->name('tickets.addUser');
+    // Felhasználó levétele ticket-ről
+    Route::delete('tickets/{ticket}/users/{user}', [TicketController::class, 'deleteUser'])->name('tickets.deleteUser');
 
     // Felhasználó
     Route::get('users', [UserController::class, 'index'])->name('users.index');
