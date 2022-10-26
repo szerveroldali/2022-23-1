@@ -9,13 +9,6 @@
         <a href="{{ route('posts.index') }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
     </div>
 
-    {{-- TODO: Session flashes --}}
-    @if (Session::has('post_created'))
-        <div class="alert alert-success" role="alert">
-            Post ({{ Session::get('post_created') }}) successfully created!
-        </div>
-    @endif
-
     {{-- TODO: action, method, enctype --}}
     <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
