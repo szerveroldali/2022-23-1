@@ -1,9 +1,15 @@
 {
+  "scripts": {
+    "db": "npx rimraf database/database.sqlite && npx sequelize db:migrate && npx sequelize db:seed:all"
+  },
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "bcrypt": "^5.1.0",
     "sequelize": "^6.25.3",
     "sqlite3": "^5.1.2"
   },
   "devDependencies": {
+    "rimraf": "^3.0.2",
     "sequelize-cli": "^6.5.2"
   }
 }
