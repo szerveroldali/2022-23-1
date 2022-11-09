@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+const bcrypt = require('bcrypt');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,6 +13,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
+      User.hasMany(models.Post);
+    }
+
+    comparePassword(password) {
+      // A kapott jelszó összevetése az aktuális user hashelt password-jével
+      return bcrypt.compareSync(password, this.password);
+    }
+
+    toJSON() {
+      const data = this.get();
+
+      // Jelszó eltávolítása a JSON-ből
+      if (data.hasOwnProperty("password")) {
+        delete data.password;
+      }
+
+      return data;
     }
   }
   User.init({
@@ -18,6 +38,15 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING
   }, {
+    hooks: {
+      beforeCreate: (data, options) => {
+        // Jelszó hashelése a user eltárolása előtt
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(data.password, salt);
+
+        data.password = hash;
+      }
+    },
     sequelize,
     modelName: 'User',
   });
