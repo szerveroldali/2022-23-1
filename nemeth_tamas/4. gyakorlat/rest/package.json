@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "dev": "npx nodemon server.js"
+  },
+  "dependencies": {
+    "fastify": "^4.9.2",
+    "sequelize": "^6.25.5",
+    "sqlite3": "^5.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "sequelize-cli": "^6.5.2"
+  }
+}
