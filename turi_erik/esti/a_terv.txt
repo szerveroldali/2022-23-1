@@ -1,0 +1,9 @@
+Node.js bevezető - done
+
+1. REST API
+----------- <- 1. ZH - nov. 30. (13:00-16:00 v 16:00-19:00)
+2. GraphQL
+3. Websocket
+----------- <- 2. ZH
+
+KÖZÖS: Sequelize
