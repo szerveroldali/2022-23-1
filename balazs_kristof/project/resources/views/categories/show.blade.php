@@ -9,7 +9,6 @@
         </div>
         <div class="col-12 col-md-4">
             <div class="float-lg-end">
-                {{-- TODO: Links, policy --}}
 
                 <a href="{{ route('categories.edit', $category->id) }}" role="button" class="btn btn-sm btn-primary">
                     <i class="far fa-edit"></i> Edit category
@@ -44,9 +43,9 @@
                         Yes, delete this category
                     </button>
 
-                    {{-- TODO: Route, directives --}}
-                    <form id="delete-category-form" action="#" method="POST" class="d-none">
-
+                    <form id="delete-category-form" action="{{ route('categories.destroy', $category->id) }}" method="POST" class="d-none">
+                        @csrf    
+                        @method('DELETE')
                     </form>
                 </div>
             </div>
@@ -58,7 +57,7 @@
     <div class="row mt-3">
         <div class="col-12 col-lg-9">
             <div class="row">
-                @forelse ($category->posts as $post)
+                @forelse ($posts as $post)
                     <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-self-stretch">
                         <div class="card w-100">
                             <img
@@ -105,7 +104,7 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                {{-- TODO: Pagination --}}
+                {{ $posts->links() }}
             </div>
 
         </div>

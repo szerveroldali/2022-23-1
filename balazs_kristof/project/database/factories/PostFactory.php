@@ -19,7 +19,9 @@ class PostFactory extends Factory
         return [
             'user_id' => 1,
             'title' => fake()->text(32),
-            'text' => fake()->text(512)
+            'desc' => fake()->text(48),
+            'text' => fake()->text(512),
+            'cover_image' => asset('images/default_post_cover.jpg'),
         ];
     }
 }

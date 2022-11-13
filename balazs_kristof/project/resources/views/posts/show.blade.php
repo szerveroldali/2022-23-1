@@ -34,8 +34,7 @@
         <div class="col-12 col-md-4">
             <div class="float-lg-end">
 
-                {{-- TODO: Links, policy --}}
-                <a role="button" class="btn btn-sm btn-primary" href="#"><i class="far fa-edit"></i> Edit post</a>
+                <a role="button" class="btn btn-sm btn-primary" href="{{ route('posts.edit', $post->id) }}"><i class="far fa-edit"></i> Edit post</a>
 
                 <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm-modal"><i class="far fa-trash-alt">
                     <span></i> Delete post</span>
@@ -66,9 +65,9 @@
                         Yes, delete this post
                     </button>
 
-                    {{-- TODO: Route, directives --}}
-                    <form id="delete-post-form" action="#" method="POST" class="d-none">
-
+                    <form id="delete-post-form" action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-none">
+                        @csrf
+                        @method('DELETE')
                     </form>
                 </div>
             </div>

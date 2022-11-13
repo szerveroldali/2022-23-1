@@ -5,19 +5,20 @@
 <div class="container">
     <h1>Create post</h1>
     <div class="mb-4">
-        {{-- TODO: Link --}}
-        <a href="#"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
+        <a href="{{ route('posts.index') }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
     </div>
 
-    {{-- TODO: action, method, enctype --}}
-    <form>
-
+    <form method="post" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+        @csrf
         {{-- TODO: Validation --}}
 
         <div class="form-group row mb-3">
             <label for="title" class="col-sm-2 col-form-label">Title*</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control " id="title" name="title" value="">
+                @error('title')
+                    {{ $message }}
+                @enderror
             </div>
         </div>
 
@@ -42,24 +43,26 @@
             <div class="col-sm-10">
                 <textarea rows="5" class="form-control" id="text" name="text"></textarea>
             </div>
+            @error('text')
+                {{ $message }}
+            @enderror
         </div>
 
         <div class="form-group row mb-3">
             <label for="categories" class="col-sm-2 col-form-label py-0">Categories</label>
             <div class="col-sm-10">
-                {{-- TODO: Read post categories from DB --}}
-                @forelse (['primary', 'secondary','danger', 'warning', 'info', 'dark'] as $category)
+                @forelse ($categories as $category)
                     <div class="form-check">
                         <input
                             type="checkbox"
                             class="form-check-input"
-                            value="{{ $category }}"
-                            id="{{ $category }}"
-                            {{-- TODO: name, checked --}}
+                            value="{{ $category->id }}"
+                            id="{{ $category->name }}"
+                            name="category"
+                            {{ old('category') ? 'checked':'' }}
                         >
-                        {{-- TODO --}}
-                        <label for="{{ $category }}" class="form-check-label">
-                            <span class="badge bg-{{ $category }}">{{ $category }}</span>
+                        <label for="{{ $category->name }}" class="form-check-label">
+                            <span class="badge" style="background-color: {{ $category->color }}">{{ $category->name }}</span>
                         </label>
                     </div>
                 @empty

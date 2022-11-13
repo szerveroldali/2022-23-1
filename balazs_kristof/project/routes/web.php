@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function() {
-    return redirect()->route('posts.index');
+    return redirect()->route('bla.bla');
 });
 
 Route::get('/home', function() {
@@ -25,6 +25,10 @@ Route::get('/home', function() {
 
 Route::resource('posts', PostController::class);
 Route::resource('categories', CategoryController::class);
+
+Route::get('/bla', function() {
+    return view('bla');
+})->middleware('auth')->name('bla.bla');
 
 // -----------------------------------------
 
