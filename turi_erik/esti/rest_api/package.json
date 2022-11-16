@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:all"
+    "db": "npx rimraf database.sqlite && npx sequelize db:migrate && npx sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
+    "fastify": "^4.10.0",
+    "nodemon": "^2.0.20",
+    "rimraf": "^3.0.2",
     "sequelize": "^6.25.5",
     "sqlite3": "^5.1.2"
   },

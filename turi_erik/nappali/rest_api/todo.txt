@@ -1,0 +1,8 @@
+Kategóriák kezelése:
+    - GET    /categories     összes kat lista
+    - GET    /categories/:id az adott kat adatai
+    - POST   /categories     az új kat felvétele
+    - PUT    /categories/:id módosítás (teljes csere)
+    - PATCH  /categories/:id módosítás (részleges)
+    - DELETE /categories/:id egy kat törlése
+    - DELETE /categories     minden kat törlése
