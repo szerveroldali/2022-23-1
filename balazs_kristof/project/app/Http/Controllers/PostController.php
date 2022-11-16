@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -14,7 +16,7 @@ class PostController extends Controller
     public function index()
     {
         return view('posts.index', [
-            'posts' => \App\Models\Post::all(),
+            'posts' => \App\Models\Post::paginate(3),
             'categories' => \App\Models\Category::all(),
             'user_count' => \App\Models\User::count(),
         ]);
@@ -27,7 +29,13 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        if (!Auth::check()) {
+            Session::flash('login_required');
+            return redirect()->route('posts.index');
+        }
+        return view('posts.create', [
+            'categories' => \App\Models\Category::all(),
+        ]);
     }
 
     /**
@@ -38,7 +46,24 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (!Auth::check()) {
+            Session::flash('login_required');
+            return redirect()->route('posts.index');
+        }
+        $validated = $request->validate([
+            'title' => 'required',
+            'text' => 'required',
+        ]);
+        $path = $request->file('cover_image')->store('public/cover_images');
+
+        //\App\Models\Post::factory()->create($validated);
+        $post = \App\Models\Post::factory()->make($validated);
+        $post->cover_image = $path;
+        $post->save();
+
+        Session::flash('post_created');
+
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -50,7 +75,7 @@ class PostController extends Controller
     public function show($id)
     {
         return view('posts.show', [
-            'post' => \App\Models\Post::find($id)
+            'post' => \App\Models\Post::findOrFail($id)
         ]);
     }
 
@@ -62,7 +87,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('posts.edit', [
+            'post' => \App\Models\Post::find($id),
+            'categories' => \App\Models\Category::all(),
+        ]);
     }
 
     /**
@@ -74,7 +102,16 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required',
+            'text' => 'required',
+        ]);
+
+        \App\Models\Post::find($id)->update($validated);
+
+        Session::flash('post_updated');
+
+        return redirect()->route('posts.edit', $id);
     }
 
     /**
@@ -85,6 +122,8 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        \App\Models\Post::find($id)->delete();
+        Session::flash('post_deleted');
+        return redirect()->route('posts.index');
     }
 }

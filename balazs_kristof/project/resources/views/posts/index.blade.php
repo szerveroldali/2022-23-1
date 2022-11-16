@@ -7,19 +7,35 @@
         <div class="col-12 col-md-8">
             <h1>All posts</h1>
         </div>
+        @auth
         <div class="col-12 col-md-4">
             <div class="float-lg-end">
-                {{-- TODO: Links, policy --}}
+                
+                <a href="{{ route('posts.create') }}" role="button" class="btn btn-sm btn-success mb-1"><i class="fas fa-plus-circle"></i> Create post</a>
 
-                <a href="#" role="button" class="btn btn-sm btn-success mb-1"><i class="fas fa-plus-circle"></i> Create post</a>
-
-                <a href="/categories/create" role="button" class="btn btn-sm btn-success mb-1"><i class="fas fa-plus-circle"></i> Create category</a>
+                <a href="{{ route('categories.create') }}" role="button" class="btn btn-sm btn-success mb-1"><i class="fas fa-plus-circle"></i> Create category</a>
 
             </div>
         </div>
+        @endauth
     </div>
 
     {{-- TODO: Session flashes --}}
+    @if (Session::has('login_required'))
+        <div class="alert alert-danger">
+            Login required for that action!
+        </div>
+    @endif
+    @if (Session::has('category_deleted'))
+        <div class="alert alert-success">
+            Category successfully deleted!
+        </div>
+    @endif
+    @if (Session::has('post_deleted'))
+        <div class="alert alert-success">
+            Post successfully deleted!
+        </div>
+    @endif
 
     <div class="row mt-3">
         <div class="col-12 col-lg-9">
@@ -28,7 +44,7 @@
                     <div class="col-12 col-md-6 col-lg-4 mb-3 d-flex align-self-stretch">
                         <div class="card w-100">
                             <img
-                                src="{{ asset('images/default_post_cover.jpg') }}"
+                                src="{{ asset($post->cover_image) }}"
                                 class="card-img-top"
                                 alt="Post cover"
                             >
@@ -71,7 +87,7 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                {{-- TODO: Pagination --}}
+                {{ $posts->links() }}
             </div>
 
         </div>

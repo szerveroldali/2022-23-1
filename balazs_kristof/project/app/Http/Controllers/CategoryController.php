@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
@@ -43,7 +44,7 @@ class CategoryController extends Controller
             ]
         );
 
-        \App\Models\Category::factory()->create($validated);
+        Category::factory()->create($validated);
 
         Session::flash('category_created');
 
@@ -60,7 +61,8 @@ class CategoryController extends Controller
     {
         return view('categories.show', [
             'post_count' => \App\Models\Post::count(),
-            'category' => \App\Models\Category::find($id),
+            'category' => \App\Models\Category::findOrFail($id),
+            'posts' => \App\Models\Category::findOrFail($id)->posts()->paginate(1),
             'categories' => \App\Models\Category::all(),
             'user_count' => \App\Models\User::count(),
         ]);
@@ -109,6 +111,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        \App\Models\Category::find($id)->delete();
+        Session::flash('category_deleted');
+        return redirect()->route('posts.index');
     }
 }

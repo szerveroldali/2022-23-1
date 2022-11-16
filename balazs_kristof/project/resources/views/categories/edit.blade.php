@@ -14,7 +14,6 @@
         </div>
     @endif
 
-    {{-- TODO: action, method --}}
     <form method="post" action="{{ route('categories.update', $category->id) }}">
         @csrf
         @method('PATCH')
