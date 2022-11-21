@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+const bcrypt = require('bcrypt');
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         /**
@@ -13,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
                 through: 'TicketUser',
             });
         }
+
+        comparePassword(password) {
+            return bcrypt.compareSync(password, this.password);
+        }
+
+        
     }
     User.init(
         {
@@ -24,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
         {
             sequelize,
             modelName: 'User',
+            hooks: {
+                beforeCreate: (user) => {
+                    user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(12));
+                }
+            }
         }
     );
     return User;

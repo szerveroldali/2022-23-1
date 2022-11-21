@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     Ticket.init(
         {
             title: DataTypes.STRING,
-            priority: DataTypes.ENUM,
+            // priority: DataTypes.ENUM,
+            priority: DataTypes.INTEGER,
             done: DataTypes.BOOLEAN,
         },
         {
