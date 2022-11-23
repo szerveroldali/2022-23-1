@@ -1,0 +1,8 @@
+{
+    "ignore": ["test/*", "database/*"],
+    "verbose": false,
+    "env": {
+        "NODE_ENV": "development"
+    },
+    "ext": "js,json,gql,graphql"
+}

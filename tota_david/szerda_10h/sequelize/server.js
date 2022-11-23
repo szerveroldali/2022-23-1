@@ -1,7 +1,96 @@
 const { User, Post, Category } = require('./models');
+
 const fastify = require('fastify')({
     logger: true
 })
+
+fastify.register(require('@fastify/jwt'), {
+    secret: 'secret'
+});
+
+fastify.decorate("authenticate", async function (request, reply) {
+    try {
+        await request.jwtVerify()
+    } catch (err) {
+        reply.send(err)
+    }
+});
+
+require('./graphql')(fastify);
+
+// const schema = `
+//   type Query {
+//         add(x: Int, y: Int): Int
+//   }
+// `
+
+// const resolvers = {
+//     Query: {
+//         add: async (_, { x, y }) => x + y
+//     }
+// }
+
+// fastify.register(require('mercurius'), {
+//     schema,
+//     resolvers,
+//     graphiql: true
+// })
+
+fastify.post(
+    '/login',
+
+    {
+        schema: {
+            body: {
+                type: 'object',
+                required: ['email', 'password'],
+                properties: {
+                    email: { type: 'string' },
+                    password: { type: 'string' },
+                }
+            }
+        }
+    }, 
+
+    async (request, reply) => {
+        const { email, password } = request.body;
+        
+        const user = await User.findOne({
+            where: {
+                // email: request.body.email,
+                email
+            }
+        });
+
+        if (!user) {
+            return reply.status(404).send({
+                message: "User not found"
+            })
+        }
+
+        if (!user.checkPassword(password)) {
+            return reply.status(401).send({
+                message: "Wrong password"
+            })
+        }
+
+        const token = fastify.jwt.sign({ 
+            payload: user.toJSON(),
+        })
+
+        reply.send({ token })
+    }
+)
+
+fastify.get(
+    '/who', 
+    {
+        onRequest: [fastify.authenticate]
+    },
+    async (request, reply) => {
+        reply.send(request.user)
+    }
+)
 
 fastify.get(
     '/users/:id', 
