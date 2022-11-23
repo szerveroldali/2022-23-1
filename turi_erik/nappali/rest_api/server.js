@@ -178,6 +178,79 @@ fastify.get('/posts-title', async (request, reply) => {
     reply.send(posts.map(p => p.title))
 })
 
+fastify.register(require('@fastify/jwt'), {
+    secret: 'secret'
+})
+
+fastify.post('/login', {
+    schema:{
+        body: {
+            type: 'object',
+            required: ['email'],
+            properties: {
+                email: {type: 'string', format: 'email'}
+            }
+        }
+    }
+}, async (request, reply) => {
+    const user = await User.findOne({ where: { email: request.body.email }})
+    if (!user)
+        return reply.status(404).send({message: 'User not found.'})
+    const token = fastify.jwt.sign( user.toJSON() )
+    reply.send({ token })
+})
+
+fastify.decorate("authenticate", async function(request, reply) {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      reply.send(err)
+    }
+  })
+
+fastify.get('/who', { onRequest: [fastify.authenticate] } , async (request, reply) => {
+    reply.send(request.user)
+})
+
+fastify.post('/posts', {onRequest: [fastify.authenticate], schema: {
+    body: {
+        type: 'object',
+        required: ['title', 'content', 'categories'],
+        properties: {
+            title: {type: 'string'},
+            content: {type: 'string'},
+            categories: {type: 'array', items: {type: 'string'}}
+        }
+    }
+}}, async (request, reply) => {
+    const post = await Post.create({
+        title: request.body.title,
+        content: request.body.content,
+        UserId: request.user.id
+    })
+    let existingCategories = []
+    let createdCategories = []
+    for(const categoryName of request.body.categories){
+        let category = await Category.findOne( {where: {name: categoryName}} )
+        if (!category){
+            category = await Category.create({name: categoryName, hidden: false})
+            createdCategories.push(categoryName)
+        } else {
+            existingCategories.push(categoryName)
+        }
+        post.addCategory(category)
+    }
+    reply.status(201).send({...post.dataValues, existingCategories, createdCategories})
+})
+
+const {readFileSync} = require('fs')
+
+fastify.register(require('mercurius'), {
+    schema: readFileSync('./graphql/schema.gql').toString(),
+    resolvers: require('./graphql/resolvers'),
+    graphiql: true
+})
+
 fastify.listen({ port: 4000 }, (err, address) => {
     if (err) throw err
 })

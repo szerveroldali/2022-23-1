@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@fastify/jwt": "^6.3.3",
     "fastify": "^4.10.0",
+    "mercurius": "^11.3.0",
     "nodemon": "^2.0.20",
     "rimraf": "^3.0.2",
     "sequelize": "^6.25.5",

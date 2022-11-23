@@ -1,0 +1,11 @@
+type Query {
+    hello(name: String): String!
+    add(x: Int, y: Int): Int!
+    categories: [Category]
+}
+
+type Category {
+    id: Int!
+    name: String!
+    hidden: Boolean!
+}
