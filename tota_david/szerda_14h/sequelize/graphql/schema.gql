@@ -1,0 +1,54 @@
+scalar Date
+
+type Query {
+    add(x: Int, y: Int): Int
+    hello: String
+    test: String
+    categories: [Category]
+    posts: [Post]
+    who: String
+}
+
+type User {
+    # ! = nem null
+    id: Int!
+    name: String!
+    email: String!
+    createdAt: Date!
+    updatedAt: Date!
+
+    posts: [Post]
+}
+
+type Category {
+    # ! = nem null
+    id: Int!
+    name: String!
+    color: String!
+    createdAt: Date!
+    updatedAt: Date!
+
+    posts: [Post]
+}
+
+type Post {
+    # ! = nem null
+    id: Int!
+    title: String!
+    text: String!
+    createdAt: Date!
+    updatedAt: Date!
+
+    categories: [Category]
+    author: User
+}
+
+input PostInput {
+    title: String!
+    text: String!
+}
+
+type Mutation {
+    createPost(post: PostInput!): Post
+    editPost(id: Int!, post: PostInput!): Post
+}

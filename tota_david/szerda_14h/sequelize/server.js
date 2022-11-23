@@ -14,11 +14,82 @@
     DELETE  /categories/:id     töröl egy kategóriát
 */
 
-const { Category, Post } = require('./models');
+const { Category, Post, User } = require('./models');
+const { readFileSync } = require('fs');
 
 const fastify = require('fastify')({
     logger: true
 })
+
+fastify.register(require('@fastify/jwt'), {
+    secret: 'secret'
+})
+
+fastify.register(require('mercurius'), {
+    schema: readFileSync('./graphql/schema.gql').toString(),
+    resolvers: require('./graphql/resolvers'),
+    graphiql: true,
+    context: (request, reply) => {
+        return {
+            // request: request,
+            request
+        }
+    }
+})
+
+fastify.decorate("authenticate", async function (request, reply) {
+    try {
+        await request.jwtVerify()
+    } catch (err) {
+        reply.send(err)
+    }
+})
+
+fastify.post('/login', {
+    schema: {
+        body: {
+            type: 'object',
+            required: ['email', 'password'],
+            properties: {
+                email: {
+                    type: 'string',
+                },
+                password: {
+                    type: 'string',
+                }
+            }
+        }
+    }
+}, async (request, reply) => {
+    const { email, password } = request.body;
+
+    const user = await User.findOne({
+        where: {
+            // email: email,
+            email
+        }
+    })
+
+    if (!user) {
+        return reply.status(404).send({
+            message: "User not found"
+        })
+    }
+
+    if (!user.comparePassword(password)) {
+        return reply.status(401).send({
+            message: "Wrong password"
+        })
+    }
+
+    const token = fastify.jwt.sign(user.toJSON())
+
+    reply.send({ token })
+});
+
+fastify.get('/who', { onRequest: [fastify.authenticate] }, async (request, reply) => {
+    reply.send(request.user)
+});
 
 // Declare a route
 // fastify.get('/', (request, reply) => {
