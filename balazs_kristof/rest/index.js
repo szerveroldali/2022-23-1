@@ -1,7 +1,17 @@
 require('dotenv').config();
 const fastify = require('fastify')({ logger: true });
 
-const { Category, Post } = require('./models');
+fastify.register(require('@fastify/jwt'), { secret: 'kiscicaNAGYMACSKA' });
+
+fastify.decorate('authenticate', async function (request, reply) {
+    try {
+        await request.jwtVerify();
+    } catch (error) {
+        reply.send(error);
+    }
+});
+
+const { Category, Post, User } = require('./models');
 
 fastify.get('/categories', async (request, reply) => {
     reply.send(await Category.findAll());
@@ -157,6 +167,41 @@ fastify.get('/posts/:id', {
         return reply.status(404).send({ message: 'Post was not found.' });
     }
     reply.send(post);
+});
+
+fastify.post('/login', {
+    schema: {
+        body: {
+            type: 'object',
+            required: [ 'email', 'password' ],
+            properties: {
+                email: { type: 'string' },
+                password: { type: 'string' }
+            }
+        }
+    }
+}, async (request, reply) => {
+    const { email, password } = request.body;
+
+    const user = await User.findOne({
+        where: {
+            email,
+            password
+        }
+    });
+    
+    if (!user) {
+        return reply.status(404).send({ message: 'User was not found.' });
+    }
+
+    const token = fastify.jwt.sign({ email: user.email });
+    reply.send({ token });
+});
+
+fastify.get('/whois', {
+    onRequest: [ fastify.authenticate ]
+}, async (request, reply) => {
+    reply.send(request.user);
 });
 
 fastify.listen({ port: process.env.PORT }, (error, address) => {
