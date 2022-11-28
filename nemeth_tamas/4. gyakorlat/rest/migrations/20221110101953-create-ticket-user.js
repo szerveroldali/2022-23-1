@@ -16,14 +16,16 @@ module.exports = {
                     model: 'Users',
                     key: 'id',
                 },
+                onDelete: 'cascade',
                 type: Sequelize.INTEGER,
             },
             TicketId: {
                 allowNull: false,
                 references: {
-                  model: 'Tickets',
-                  key: 'id'
+                    model: 'Tickets',
+                    key: 'id',
                 },
+                onDelete: 'cascade',
                 type: Sequelize.INTEGER,
             },
             createdAt: {
@@ -42,11 +44,6 @@ module.exports = {
     },
 
     async down(queryInterface, Sequelize) {
-        /**
-         * Add reverting commands here.
-         *
-         * Example:
-         * await queryInterface.dropTable('users');
-         */
+        await queryInterface.dropTable('TicketUser');
     },
 };

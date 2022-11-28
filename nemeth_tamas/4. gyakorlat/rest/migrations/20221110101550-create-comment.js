@@ -18,6 +18,7 @@ module.exports = {
       },
       UserId: {
         allowNull: false,
+        onDelete: 'cascade',
         references: {
           model: 'Users',
           key: 'id'
@@ -26,6 +27,7 @@ module.exports = {
       },
       TicketId: {
         allowNull: false,
+        onDelete: 'cascade',
         references: {
           model: 'Tickets',
           key: 'id'

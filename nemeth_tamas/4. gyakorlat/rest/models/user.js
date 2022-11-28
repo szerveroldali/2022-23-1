@@ -19,6 +19,13 @@ module.exports = (sequelize, DataTypes) => {
             return bcrypt.compareSync(password, this.password);
         }
 
+        toJSON() {
+            let userData = this.get();
+            if(userData.hasOwnProperty('password')) {
+                delete userData.password;
+            }
+            return userData;
+        }
         
     }
     User.init(
