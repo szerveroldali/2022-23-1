@@ -178,7 +178,7 @@ Lekéri a megadott azonosítójú állat adatait.
 
 - Minta kérés: `GET http://localhost:4000/animals/6`
 - Válasz, ha az `id` paraméter hiányzik vagy nem egész szám: `400 BAD REQUEST`
-- Válasz, ha a megadott `id`-vel nem létezik élőhely: `404 NOT FOUND`
+- Válasz, ha a megadott `id`-vel nem létezik állat: `404 NOT FOUND`
 - Válasz helyes kérés esetén: `200 OK`
 ```json
 {
