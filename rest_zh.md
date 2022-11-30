@@ -1,6 +1,6 @@
 # Szerveroldali webprogramozás - REST API zárthelyi
 
-_1. turnus: 2022. november 30. 13:00-16:00_
+_2. turnus: 2022. november 30. 16:30-19:30_
 
 Tartalom:
 
@@ -11,16 +11,16 @@ Tartalom:
   - [Feladatok](#feladatok)
     - [1. feladat: Modellek és kapcsolatok (3 pont)](#1-feladat-modellek-és-kapcsolatok-3-pont)
     - [2. feladat: Seeder (3 pont)](#2-feladat-seeder-3-pont)
-    - [3. feladat: `GET /products` (1 pont)](#3-feladat-get-products-1-pont)
-    - [4. feladat: `GET /products/:id` (1,5 pont)](#4-feladat-get-productsid-15-pont)
-    - [5. feladat: `POST /products` (1,5 pont)](#5-feladat-post-products-15-pont)
-    - [6. feladat: `PATCH /products/:id` (2 pont)](#6-feladat-patch-productsid-2-pont)
+    - [3. feladat: `GET /animals` (1 pont)](#3-feladat-get-animals-1-pont)
+    - [4. feladat: `GET /animals/:id` (1,5 pont)](#4-feladat-get-animalsid-15-pont)
+    - [5. feladat: `POST /animals` (1,5 pont)](#5-feladat-post-animals-15-pont)
+    - [6. feladat: `PATCH /animals/:id` (2 pont)](#6-feladat-patch-animalsid-2-pont)
     - [7. feladat: `POST /login` (2 pont)](#7-feladat-post-login-2-pont)
-    - [8. feladat: `GET /my-orders` (2 pont)](#8-feladat-get-my-orders-2-pont)
-    - [9. feladat: `GET /my-orders/products` (2 pont)](#9-feladat-get-my-ordersproducts-2-pont)
-    - [10. feladat: `POST /my-orders` (4 pont)](#10-feladat-post-my-orders-4-pont)
-    - [11. feladat: `POST /pack-order/:id` (4 pont)](#11-feladat-post-pack-orderid-4-pont)
-    - [12. feladat: `POST /ship-orders` (4 pont)](#12-feladat-post-ship-orders-4-pont)
+    - [8. feladat: `GET /my-animals` (2 pont)](#8-feladat-get-my-animals-2-pont)
+    - [9. feladat: `GET /my-animals/with-place` (2 pont)](#9-feladat-get-my-animalswith-place-2-pont)
+    - [10. feladat: `POST /my-animals` (4 pont)](#10-feladat-post-my-animals-4-pont)
+    - [11. feladat: `POST /clean-places` (4 pont)](#11-feladat-post-clean-places-4-pont)
+    - [12. feladat: `POST /move-animals` (4 pont)](#12-feladat-post-move-animals-4-pont)
 
 ## Tudnivalók
 
@@ -28,7 +28,7 @@ Tartalom:
 <summary>Tudnivalók megjelenítése</summary>
 
 - A zárthelyi megoldására **180 perc** áll rendelkezésre, amely a kidolgozás mellett **magába foglalja** a kötelező nyilatkozat értelmezésére és kitöltésére, a feladatok elolvasására, az anyagok letöltésére, összecsomagolására és feltöltésére szánt időt is.
-- A kidolgozást a Canvas rendszeren keresztül kell beadni egyetlen **.zip** állományként. **A rendszer pontban 16:00-kor lezár, ezután nincs lehetőség beadásra!**
+- A kidolgozást a Canvas rendszeren keresztül kell beadni egyetlen **.zip** állományként. **A rendszer pontban 19:30-kor lezár, ezután nincs lehetőség beadásra!**
 - A beadást és nyilatkozat kitöltését megkönnyítendő létrehoztunk egy parancsot a kezdőcsomagban, amely `npm run zip` hívásával futtatható. Igyekeztünk a legjobb tudásunk szerint elkészíteni csomagolót, de beadás előtt mindenképpen ellenőrizd a `zipfiles` mappában létrejött állomány tartalmát! **A helyes és hiánytalan feltöltés ellenőrzése a hallgató feladata, az ebből fakadó hibákért felelősséget nem vállalunk!**
 - A `node_modules` könyvtár beadása **TILOS!**
 - A megfelelően kitöltött `statement.txt` (nyilatkozat) nélküli megoldásokat **nem értékeljük**. Ha esetleg a nyilatkozat kimaradt vagy hibás, utólag Canvas hozzászólásban pótolható.
@@ -60,7 +60,7 @@ Tartalom:
 <details>
 <summary>Kezdőcsomag segédlet megjelenítése</summary>
 
-A zárthelyihez kezdőcsomagot biztosítunk, amelynek használata **kötelező**. A csomagot GitHub-ról lehet letölteni, a függőségek telepítése után (`npm i`) kezdhető meg a fejlesztés. 
+A zárthelyihez kezdőcsomagot biztosítunk, amelynek használata **kötelező**. A csomagot GitHub-ról lehet letölteni, a függőségek telepítése után (`npm i`) kezdhető meg a fejlesztés.  
 
 - A kezdőcsomag elérhető ebben a GitHub repository-ban:
   - https://github.com/szerveroldali/restapi_kezdocsomag
@@ -96,32 +96,32 @@ van érvényben, ahol a feladat ettől eltérően nem jelzi.
 
 A következő modelleket kell kigenerálni/létrehozni: 
 
-- `Product` - termék
+- `Place` - élőhely
   - `id`
-  - `name` - string, a termék megnevezése
-  - `description` - string, nullable, a termék rövid leírása
-  - `price` - integer, a termék egységára forintban
-  - `count` - integer, a termékből raktáron lévő darabszám
+  - `cleaned` - boolean, kitakarították-e az élőhelyet
+  - `capacity` - integer, az élőhelyben még kényelmesen elhelyezhető állatok maximális száma
   - `createdAt`
   - `updatedAt`
-- `User` - felhasználó
+- `Animal` - állat
   - `id`
-  - `email` - string, egyedi (unique)
-  - `isWorker` - boolean, munkatárs esetén igaz, megrendelő esetén hamis
+  - `name` - string, az állat neve
+  - `weight` - float, az állat tömege
+  - `birthdate` - date, az állat születésének napja
+  - `image` - string, nullable, kép az állatról
+  - `PlaceId` - integer, az állat élőhelyének azonosítója
   - `createdAt`
   - `updatedAt`
-- `Order` - megrendelés
+- `Handler` - állatgondozó
   - `id`
-  - `address` - string, kézbesítési cím
-  - `UserId` - integer, hivatkozás a rendelést leadó felhasználó azonosítójára
-  - `shipped` - boolean, teljesítésre került-e már a megrendelés?
+  - `name` - string, a gondozó teljes neve, egyedi (unique)
+  - `power` - integer, a gondozó tekintélye a szervezeten belül (nagyobb = jobb)
   - `createdAt`
   - `updatedAt`
 
 A fenti modellek közötti asszociációk (kapcsolatok):
 
-- `User` 1 : N `Order`
-- `Order` N : N `Product`
+- `Place` 1 : N `Animal`
+- `Animal` N : N `Human`
 
 _Természetesen 1:N kapcsolatot egy felvett mezővel, N:N kapcsolatot pedig külön kapcsolótábla létrehozásával tárolunk._
 
@@ -134,31 +134,37 @@ A megoldás akkor számít teljes értékűnek, ha az alábbiak **mindegyike** t
 2. a generált modellek minden esetet lefednek (pl. egy nullable mező néhol ki van töltve adattal, néhol pedig `null` értékű; logikai mező változatosan igaz vagy hamis, stb.)
 3. a kapcsolatok is megfelelően fel vannak töltve
 
+Kis technikai segítség a szép seederhez:
+- születési dátumra opciók: [faker.date.birthdate()](https://fakerjs.dev/api/date.html#birthdate) vagy [faker.date.recent()](https://fakerjs.dev/api/date.html#recent)
+- állatos kép URL: [faker.image.animals()](https://fakerjs.dev/api/image.html#animals) -  a kép nem fog minden megtekintéskor változni, ha a harmadik paraméter igaz
+
 A seedert az automatikus tesztelő nem tudja értékelni, minden esetben a gyakorlatvezető fogja kézzel pontozni.
 
-### 3. feladat: `GET /products` (1 pont)
+### 3. feladat: `GET /animals` (1 pont)
 
-Lekéri az összes létező terméket.
+Lekéri az összes létező állatot.
 
-- Minta kérés: `GET http://localhost:4000/products`
+- Minta kérés: `GET http://localhost:4000/animals`
 - Válasz helyes kérés esetén: `200 OK`
 ```json
 [
   {
     "id": 1,
-    "name": "Handcrafted Bronze Chips",
-    "description": "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
-    "price": 1990,
-    "count": 42,
+    "name": "John",
+    "weight": 32.42,
+    "birthdate": "2021-09-25T18:33:20.128Z",
+    "image": null,
+    "PlaceId": 1,
     "createdAt": "2022-11-30T...",
     "updatedAt": "2022-11-30T..."
   },
   {
     "id": 2,
-    "name": "Recycled Fresh Shirt",
-    "description": null,
-    "price": 20431,
-    "count": 5,
+    "name": "Kelli",
+    "weight": 6.51,
+    "birthdate": "2015-11-06T19:47:21.856Z",
+    "image": "https://loremflickr.com/640/480/animals?lock=66212",
+    "PlaceId": 7,
     "createdAt": "2022-11-30T...",
     "updatedAt": "2022-11-30T..."
   },
@@ -166,38 +172,41 @@ Lekéri az összes létező terméket.
 ]
 ```
 
-### 4. feladat: `GET /products/:id` (1,5 pont)
+### 4. feladat: `GET /animals/:id` (1,5 pont)
 
-Lekéri a megadott azonosítójú termék adatait.
+Lekéri a megadott azonosítójú állat adatait.
 
-- Minta kérés: `GET http://localhost:4000/products/6`
+- Minta kérés: `GET http://localhost:4000/animals/6`
 - Válasz, ha az `id` paraméter hiányzik vagy nem egész szám: `400 BAD REQUEST`
-- Válasz, ha a megadott `id`-vel nem létezik termék: `404 NOT FOUND`
+- Válasz, ha a megadott `id`-vel nem létezik élőhely: `404 NOT FOUND`
 - Válasz helyes kérés esetén: `200 OK`
 ```json
 {
   "id": 6,
-  "name": "Incredible Steel Gloves",
-  "description": "The Football Is Good For Training And Recreational Purposes",
-  "price": 9073,
-  "count": 27,
+  "name": "Luna",
+  "weight": 4.69,
+  "birthdate": "2019-12-31T15:17:47.608Z",
+  "image": "https://loremflickr.com/640/480/animals?lock=31911",
+  "PlaceId": 3,
   "createdAt": "2022-11-30T...",
   "updatedAt": "2022-11-30T..."
 }
 ```
 
-### 5. feladat: `POST /products` (1,5 pont)
+### 5. feladat: `POST /animals` (1,5 pont)
 
-Létrehoz egy új terméket a kérés törzsében (body) megadott adatokkal. A törzsnek minden kötelezően kitöltendő mezőt tartalmaznia kell; viszont a `description` hiányozhat, amely esetben a visszaadott objektum ezen mezője `null` értéket kell tartalmazzon.
+Létrehoz egy új állatot a kérés törzsében (body) megadott adatokkal. A törzsnek minden kötelezően kitöltendő mezőt tartalmaznia kell; viszont az `image` hiányozhat, amely esetben a visszaadott objektum ezen mezője `null` értéket kell tartalmazzon.
 
-_(A valóságban nyilván hitelesített felhasználó hozna létre terméket, de a zárthelyi ezen feladatánál egyelőre nem szükséges ezzel foglalkozni, bárki meghívhatja a végpontot.)_
+_(A valóságban nyilván hitelesített felhasználó hozna létre állatot, de a zárthelyi ezen feladatánál egyelőre nem szükséges ezzel foglalkozni, bárki meghívhatja a végpontot.)_
 
-- Minta kérés: `POST http://localhost:4000/products`
+- Minta kérés: `POST http://localhost:4000/animals`
 ```json
 {
-  "name": "A new product to create",
-  "price": 9900,
-  "count": 100
+  "name" : "Winnie",
+  "weight" : 8.6,
+  "birthdate" : "2018-07-09",
+  "image" : null,
+  "PlaceId" : 2
 }
 ```
 - Válasz, ha a kérés törzse (body) hiányos vagy hibás adatot tartalmaz: `400 BAD REQUEST`
@@ -205,37 +214,39 @@ _(A valóságban nyilván hitelesített felhasználó hozna létre terméket, de
 ```json
 {
   "id": ...,
-  "name": "A new product to create",
-  "price": 9900,
-  "count": 100,
-  "description": null,
+  "name": "Winnie",
+  "weight": 8.6,
+  "birthdate": "2018-07-09T00:00:00.000Z",
+  "image": null,
+  "PlaceId": 2,
   "updatedAt": "2022-11-30T...",
   "createdAt": "2022-11-30T..."
 }
 ```
 
-### 6. feladat: `PATCH /products/:id` (2 pont)
+### 6. feladat: `PATCH /animals/:id` (2 pont)
 
-Az adott azonosítójú termék megadott mezőinek felülírása.
+Az adott azonosítójú állat megadott mezőinek felülírása.
 
 _(Hitelesítés ennél a feladatnál sem szükséges még.)_
 
-- Minta kérés: `PATCH http://localhost:4000/products/13`
+- Minta kérés: `PATCH http://localhost:4000/animals/13`
 ```json
 {
-  "price": 4200
+  "weight": 12.3
 }
 ```
 - Válasz, ha a kérés bármelyik része (paraméter vagy törzs) hibás: `400 BAD REQUEST`
-- Válasz, ha a megadott `id`-vel nem létezik termék: `404 NOT FOUND`
+- Válasz, ha a megadott `id`-vel nem létezik állat: `404 NOT FOUND`
 - Válasz helyes kérés esetén: `200 OK`
 ```json
 {
   "id": 13,
-  "name": "Incredible Steel Gloves",
-  "description": "The Football Is Good For Training And Recreational Purposes",
-  "price": 4200,
-  "count": 57,
+  "name": "Delaney",
+  "weight": 12.3,
+  "birthdate": "2012-12-28T00:16:57.719Z",
+  "image": null,
+  "PlaceId": 9,
   "createdAt": "2022-11-30T...",
   "updatedAt": "2022-11-30T..."
 }
@@ -243,14 +254,14 @@ _(Hitelesítés ennél a feladatnál sem szükséges még.)_
 
 ### 7. feladat: `POST /login` (2 pont)
 
-**Hitelesítés.** Az egyszerűség kedvéért nincs jelszókezelés, csak egy létező felhasználó e-mail címét kell felküldeni a kérés törzsében (body). Ha a megadott e-mail címmel létezik fiók az adatbázisban, azt sikeres bejelentkezésnek vesszük és kiállítjuk a tokent. Ne felejtsd el a payload-ba a felhasználó adatait elhelyezni! 
+**Hitelesítés.** Az egyszerűség kedvéért nincs jelszókezelés, csak egy létező gondozó teljes nevét kell felküldeni a kérés törzsében (body). Ha a megadott névvel létezik gondozó az adatbázisban, azt sikeres bejelentkezésnek vesszük és kiállítjuk a tokent. Ne felejtsd el a payload-ba a felhasználó adatait elhelyezni! 
 
 _(Technikai részletek: A token aláírásához `HS256` algoritmust használj `secret` titkosító kulccsal! A kiadott kezdőcsomag alapbeállításon erre a működésre van konfigurálva, de ha szükségessé válna a [tokent ellenőrizni](https://jwt.io/), akkor hasznos ezekről tudni.)_
 
 - Minta kérés: `POST http://localhost:4000/login`
 ```json
 {
-  "email": "gipsz.jakab@szerveroldali.hu"
+  "name": "Sarah Connor"
 }
 ```
 - Válasz, ha a kérés hibás: `400 BAD REQUEST`
@@ -262,164 +273,162 @@ _(Technikai részletek: A token aláírásához `HS256` algoritmust használj `s
 }
 ```
 
-### 8. feladat: `GET /my-orders` (2 pont)
+### 8. feladat: `GET /my-animals` (2 pont)
 
-**Hitelesített végpont!** Lekéri az összes olyan megrendelést, amely a hitelesített felhasználóhoz tartozik.
+**Hitelesített végpont!** Lekéri az összes olyan állatot, amelynek a hitelesített felhasználó gondozója.
 
 Emlékeztető! A hitelesített végpontokra a következő fejléccel kell kérést küldeni:
 ```
 Authorization: Bearer <token>
 ```
 
-- Minta kérés: `GET http://localhost:4000/my-orders`
+- Minta kérés: `GET http://localhost:4000/my-animals`
 - Válasz hitelesítetlen kérés esetén: `401 UNAUTHORIZED`
 - Válasz helyes kérés esetén: `200 OK`
 ```json
 [
   {
-    "id": 1,
-    "address": "521 Fisher Bypass Suite 169",
-    "UserId": 4,
-    "shipped": true,
-    "createdAt": "2022-11-30T...",
-    "updatedAt": "2022-11-30T..."
-  },
-  {
-    "id": 5,
-    "address": "62606 Ferry Ville Suite 221",
-    "UserId": 4,
-    "shipped": false,
-    "createdAt": "2022-11-30T...",
-    "updatedAt": "2022-11-30T..."
-  },
-  stb.
-]
-```
-
-### 9. feladat: `GET /my-orders/products` (2 pont)
-
-**Hitelesített végpont!** Lekéri az összes olyan megrendelést, amely a hitelesített felhasználóhoz tartozik. Az előző feladathoz képest a különbség kimenet formátumában van, ugyanis most minden megrendeléshez a benne lévő termékek adatait is tartalmazza a válasz. A kapcsolótáblát (amely feleslegesen ismételné a termék és rendelés azonosítóját) ne vegyük bele a válaszba! (Lásd a példát!)
-
-- Minta kérés: `GET http://localhost:4000/my-orders/products`
-- Válasz hitelesítetlen kérés esetén: `401 UNAUTHORIZED`
-- Válasz helyes kérés esetén: `200 OK`
-```json
-[
-  {
-    "id": 5,
-    "address": "521 Fisher Bypass Suite 169",
-    "UserId": 4,
-    "shipped": true,
+    "id": 7,
+    "name": "Herminio",
+    "weight": 1.88,
+    "birthdate": "2014-01-12T08:48:37.433Z",
+    "image": "https://loremflickr.com/640/480/animals?lock=70244",
+    "PlaceId": 6,
     "createdAt": "2022-11-30T...",
     "updatedAt": "2022-11-30T...",
-    "Products": [
-      {
-        "id": 1,
-        "name": "Handcrafted Bronze Chips",
-        "description": "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
-        "price": 23023,
-        "count": 33,
+    "AnimalHandler": {
         "createdAt": "2022-11-30T...",
-        "updatedAt": "2022-11-30T..."
-      },
-      {
-        "id": 3,
-        "name": "Generic Wooden Shirt",
-        "description": null,
-        "price": 22353,
-        "count": 35,
-        "createdAt": "2022-11-30T...",
-        "updatedAt": "2022-11-30T..."
-      },
-      stb.
-    ]
+        "updatedAt": "2022-11-30T...",
+        "AnimalId": 7,
+        "HandlerId": 3
+    }
   },
   stb.
 ]
 ```
 
-### 10. feladat: `POST /my-orders` (4 pont)
+### 9. feladat: `GET /my-animals/with-place` (2 pont)
 
-**Hitelesített végpont!** Új megrendelést hoz létre a hitelesített felhasználó részére. Az adatok között meg kell adni a szállítási címet, illetve a rendeléshez tartozó termékek azonosítóit. Az újonnan felvett rendelés `shipped` tulajdonságra értelemszerűen hamis.
+**Hitelesített végpont!** Lekéri az összes olyan állatot, amelynek a hitelesített felhasználó gondozója. Az előző feladathoz képest a különbség kimenet formátumában van, ugyanis most minden állathoz az élőhelyének adatait is tartalmazza a válasz. A kapcsolótáblát (amely csak ismételné az állat és a gondozó azonosítóját), illetve az állatokhoz tartozó `PlaceId` mezőket ne vegyük bele fölöslegesen a válaszba! (Lásd a példát!)
 
-Az egyszerűség kedvéért minden terméket legfeljebb egyszer tartalmaz a rendelés, és nem kell azzal foglalkozni, hogy van-e a termékből raktáron.
+- Minta kérés: `GET http://localhost:4000/my-animals/with-place`
+- Válasz hitelesítetlen kérés esetén: `401 UNAUTHORIZED`
+- Válasz helyes kérés esetén: `200 OK`
+```json
+[
+  {
+    "id": 7,
+    "name": "Herminio",
+    "weight": 1.88,
+    "birthdate": "2014-01-12T08:48:37.433Z",
+    "image": "https://loremflickr.com/640/480/animals?lock=70244",
+    "createdAt": "2022-11-30T...",
+    "updatedAt": "2022-11-30T...",
+    "Place": {
+      "id": 6,
+      "cleaned": false,
+      "capacity": 45,
+      "createdAt": "2022-11-30T...",
+      "updatedAt": "2022-11-30T..."
+    }
+  },
+  stb.
+]
+``` 
 
-Minden termékazonosító az alábbi két esetből pontosan egybe tartozik:
-- `invalidProducts`: a megadott azonosítóval nem létezik termék
-- `orderedProducts`: a termék létezik és hozzáadásra került a megrendeléshez 
+### 10. feladat: `POST /my-animals` (4 pont)
 
-A válaszobjektumban az egyes termékek azonosítóját a fenti két tömb egyikében vissza kell adni attól függően, hogy melyik eset lépett fel; illetve mellékelni kell a létrehozott megrendelés alapvető mezőit is (lásd mintaválasz).
+**Hitelesített végpont!** Segítségével a hitelesített gondozó általa gondozottként jelölhet meg egyszerre több állatot az azonosítójuk alapján. (Figyelem! Egy állatnak több gondozója is lehet egyszerre, ezek közé kell bekerüljön a hitelesített gondozó, de a többi is meg kell maradjon!)
 
-- Minta kérés: `POST http://localhost:4000/my-orders`
+Minden állatazonosító az alábbi három esetből pontosan egybe tartozik:
+- `invalidAnimals`: a megadott azonosítóval nem létezik állat
+- `alreadyMyAnimals`: létezik állat a megadott azonosítóval, és már kapcsolatban áll a hitelesített gondozóval
+- `adoptedAnimals`: létezik állat a megadott azonosítóval, és most került be a gondozottak közé
+
+A válaszobjektumban az egyes állatok azonosítóját a fenti három tömb egyikében vissza kell adni attól függően, hogy melyik eset lépett fel.
+
+- Minta kérés: `POST http://localhost:4000/my-animals`
 ```json
 {
-  "address": "1223 Nagytétényi út 162-164.",
-  "products": [2, "kiskacsa", -3, 4]
+  "animals": [4, "puppy", 6, 7]
 }
 ```
 - Válasz formailag helytelen kérés esetén: `400 BAD REQUEST`
 - Válasz hitelesítetlen kérés esetén: `401 UNAUTHORIZED`
-- Válasz helyes kérés esetén: `201 CREATED`
-```json
-{
-  "id": 26,
-  "shipped": false,
-  "address": "1223 Nagytétényi út 162-164.",
-  "UserId": 4,
-  "updatedAt": "2022-11-30T...",
-  "createdAt": "2022-11-30T...",
-  "invalidProducts": ["kiskacsa", -3],
-  "orderedProducts": [2, 4]
-}
-```
-
-### 11. feladat: `POST /pack-order/:id` (4 pont)
-
-**Hitelesített végpont!** Segítségével egy hitelesített **dolgozó** (`isWorker` mező igaz) tud kézbesítésre előkészíteni egy megrendelést. Ez azt jelenti, hogy a megrendelésben szereplő termékek darabszámát a raktárban (`count` mező) csökkenti eggyel.
-
-A megrendeléshez tartozó minden termék az alábbi két esetből pontosan egybe tartozik:
-- `missingProducts`: azon termékek azonosítója, amelyeknek darabszáma kevesebb mint 1, ezért nem tudjuk kézbesíteni
-- `packedProducts`: azon termékek azonosítója, amelyeket sikeresen bepakoltunk (darabszámukat most csökkentettük eggyel)
-
-A válaszobjektumban az egyes termékek azonosítóját a fenti két tömb egyikében vissza kell adni attól függően, hogy melyik eset lépett fel.
-
-- Minta kérés: `POST http://localhost:4000/pack-order/12`
-- Válasz hibás kérés esetén: `400 BAD REQUEST`
-- Válasz hitelesítetlen kérés esetén: `401 UNAUTHORIZED`
-- Válasz, ha a felhasználó hitelesített, de nem dolgozó: `403 FORBIDDEN`
 - Válasz helyes kérés esetén: `200 OK`
 ```json
 {
-  "missingProducts": [],
-  "packedProducts": [4, 9]
+  "invalidAnimals": ["puppy"],
+  "alreadyMyAnimals": [4, 7],
+  "adoptedAnimals": [6]
 }
 ```
 
-### 12. feladat: `POST /ship-orders` (4 pont)
+### 11. feladat: `POST /clean-places` (4 pont)
 
-**Hitelesített végpont!** Segítségével egy hitelesített **dolgozó** (`isWorker` mező igaz) tudja akár egyszerre több megrendelés `shipped` mezőjét hamisról igazra állítani a rendelések azonosítói alapján.
+**Hitelesített végpont!** Segítségével egy legalább 100-as tekintélyű (`power >= 100`) gondozó kitakarítottnak jelölhet egyszerre több élőhelyet, amelyek azonosítóit tömbként küldi fel.
 
-Minden megrendelés-azonosító az alábbi három esetből pontosan egybe tartozik:
-- `invalidOrder`: a megadott azonosítóval nem létezik megrendelés
-- `alreadyShipped`: a megrendelés már kiszállításra került (`shipped` mező eleve igaz volt)
-- `justShipped`: a megrendelés `shipped` mezője most került átállításra hamisról igazra
+Minden élőhely az alábbi három esetből pontosan egybe tartozik:
+- `invalidPlaces`: a megadott azonosítóval nem létezik élőhely
+- `alreadyCleanPlaces`: az élőhely létezik és más eleve tiszta (`cleaned` alapból igaz)
+- `clearedPlaces`: az élőhely létezik és most kerül kitakarításra (`cleaned` mező most változott igazra)
 
-A válaszobjektumban az egyes rendelések azonosítóját a fenti három tömb egyikében vissza kell adni attól függően, hogy melyik eset lépett fel.
+A válaszobjektumban az egyes élőhelyek azonosítóját a fenti három tömb egyikében vissza kell adni attól függően, hogy melyik eset lépett fel.
 
-- Minta kérés: `POST http://localhost:4000/ship-orders`
+- Minta kérés: `POST http://localhost:4000/clean-places`
 ```json
 {
-  "orders": [2222, 1, 2, 3, "asd", -4, 5]
+  "places": [2, "cage", -3, 4]
 }
 ```
-- Válasz hibás kérés esetén: `400 BAD REQUEST`
+- Válasz formailag helytelen kérés esetén: `400 BAD REQUEST`
 - Válasz hitelesítetlen kérés esetén: `401 UNAUTHORIZED`
-- Válasz, ha a felhasználó hitelesített, de nem dolgozó: `403 FORBIDDEN`
+- Válasz, ha a gondozónak nincs elég ereje: `403 FORBIDDEN`
 - Válasz helyes kérés esetén: `200 OK`
 ```json
 {
-  "invalidOrder": [2222, "asd", -4],
-  "alreadyShipped": [1, 3],
-  "justShipped": [2, 5]
+  "invalidPlaces": ["cage", -3],
+  "alreadyCleanPlaces": [2],
+  "cleanedPlaces": [4]
 }
+```
+
+### 12. feladat: `POST /move-animals` (4 pont)
+
+**Hitelesített végpont!** Segítségével egy legalább 100-as tekintélyű (`power >= 100`) gondozó állatokat helyezhet át egyik élőhelyről a másikra, amennyiben az élőhely kapacitása megengedi. A kérésben mellékelni kell az áthelyezendő állatok azonosítóit, illetve a leendő élőhelyük azonosítóját. (Lásd: minta kérés!)
+
+A válaszban az eredeti tömb kiegészítése egy `success` mezővel, amely azt jelzi, hogy az adott áthelyezés sikeres volt-e.
+
+Nem sikeres az áthelyezés, ha az alábbiak közül bármelyik fennáll:
+- az objektumnak nincs `AnimalId` vagy `PlaceId` mezője
+- nem létezik ilyen azonosítójú állat
+- nem létezik ilyen azonosítójú élőhely
+- az élőhelyen lévő állatok száma az áthelyezés után meghaladná annak kapacitását
+
+Minden egyéb esetben (tehát például akkor is, ha az állat eleve ezen az élőhelyen volt) sikeres a művelet.
+
+- Minta kérés: `POST http://localhost:4000/move-animals`
+```json
+[
+  {"AnimalId": 3, "PlaceId": 4},
+  {"AnimalId": 5, "PlaceId": -1}
+]
+```
+- Válasz, ha a kérés törzse (body) nem tömb: `400 BAD REQUEST`
+- Válasz hitelesítetlen kérés esetén: `401 UNAUTHORIZED`
+- Válasz, ha a gondozónak nincs elég ereje: `403 FORBIDDEN`
+- Válasz helyes kérés esetén: `200 OK`
+```json
+[
+  {
+    "AnimalId": 3,
+    "PlaceId": 4,
+    "success": true
+  },
+  {
+    "AnimalId": 5,
+    "PlaceId": -1,
+    "success": false
+  }
+]
 ```
