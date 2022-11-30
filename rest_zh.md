@@ -121,7 +121,7 @@ A következő modelleket kell kigenerálni/létrehozni:
 A fenti modellek közötti asszociációk (kapcsolatok):
 
 - `Place` 1 : N `Animal`
-- `Animal` N : N `Human`
+- `Animal` N : N `Handler`
 
 _Természetesen 1:N kapcsolatot egy felvett mezővel, N:N kapcsolatot pedig külön kapcsolótábla létrehozásával tárolunk._
 
