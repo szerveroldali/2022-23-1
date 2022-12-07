@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@fastify/jwt": "^6.3.3",
     "dotenv": "^16.0.3",
     "fastify": "^4.10.0",
     "sequelize": "^6.25.6",
