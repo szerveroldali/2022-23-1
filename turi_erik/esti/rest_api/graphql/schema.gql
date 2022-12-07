@@ -1,11 +1,58 @@
+scalar Date
+
 type Query {
     hello(name: String): String!
     add(x: Int, y: Int): Int!
     categories: [Category]
+    posts: [Post]
+    post(id: Int!): Post
+    postByTitle(title: String!): Post
+    users: [User]
+    who: String
+    token(email: String!): String
+}
+
+input CreatePostInput {
+    title: String!
+    content: String!
+    categoryNames: [String]!
+}
+
+type CreatePostOutput {
+    post: Post
+    invalidCategories: [String]
+    addedCategories: [String]
+}
+
+type Mutation {
+    createPost(data: CreatePostInput): CreatePostOutput
 }
 
 type Category {
     id: Int!
     name: String!
     hidden: Boolean!
+    createdAt: Date!
+    updatedAt: Date!
+    posts: [Post]
+}
+
+type Post {
+    id: Int!
+    title: String!
+    content: String!
+    UserId: Int!
+    createdAt: Date!
+    updatedAt: Date!
+    categories: [Category]
+    user: User!
+}
+
+type User {
+    id: Int!
+    name: String!
+    email: String!
+    isAdmin: Boolean!
+    createdAt: Date!
+    updatedAt: Date!
 }

@@ -248,7 +248,8 @@ const {readFileSync} = require('fs')
 fastify.register(require('mercurius'), {
     schema: readFileSync('./graphql/schema.gql').toString(),
     resolvers: require('./graphql/resolvers'),
-    graphiql: true
+    graphiql: true,
+    context: (request) => { return { request } }
 })
 
 fastify.listen({ port: 4000 }, (err, address) => {

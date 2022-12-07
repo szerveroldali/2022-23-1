@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon server.js",
+    "dev": "npx nodemon -e js,mjs,json,gql server.js",
     "db": "npx rimraf database.sqlite && npx sequelize db:migrate && npx sequelize db:seed:all"
   },
   "keywords": [],

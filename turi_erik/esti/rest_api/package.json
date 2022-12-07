@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "db": "npx rimraf database.sqlite && npx sequelize db:migrate && npx sequelize db:seed:all",
-    "dev": "npx nodemon server.js"
+    "dev": "npx nodemon -e js,mjs,json,gql server.js"
   },
   "keywords": [],
   "author": "",
