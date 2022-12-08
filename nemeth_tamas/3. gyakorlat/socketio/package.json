@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "dev": "npx nodemon index.js",
+    "task": "npx nodemon task.js"
+  },
+  "dependencies": {
+    "socket.io": "^4.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
