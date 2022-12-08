@@ -6,6 +6,8 @@ const { join } = require('path');
 const { StatusCodes } = require('http-status-codes');
 const { Sequelize, sequelize, User } = require('./models');
 const { readFileSync } = require('fs');
+const { makeExecutableSchema } = require('@graphql-tools/schema');
+const graphQLScalars = require('graphql-scalars');
 
 const secret = 'secret';
 
@@ -14,15 +16,19 @@ fastify.register(require('@fastify/jwt'), {
     secret,
 });
 
+const schema = makeExecutableSchema({
+    typeDefs: [graphQLScalars.typeDefs, readFileSync('./graphql/schema.gql').toString()],
+    resolvers: [graphQLScalars.resolvers, require('./graphql/resolvers')]
+});
+
 fastify.register(require('mercurius'), {
-    schema: readFileSync('./graphql/schema.gql').toString(),
-    resolvers: require('./graphql/resolvers'),
+    schema,
     graphiql: true,
-    context: (request) => {
+    context: request => {
         return {
-            request
-        }
-    }
+            request,
+        };
+    },
 });
 
 fastify.decorate('auth', async function (request, reply) {

@@ -6,9 +6,11 @@
   "dependencies": {
     "@fastify/autoload": "^5.4.1",
     "@fastify/jwt": "^6.3.3",
+    "@graphql-tools/schema": "^9.0.10",
     "bcrypt": "^5.1.0",
     "fastify": "^4.9.2",
     "graphql": "^16.6.0",
+    "graphql-scalars": "^1.20.1",
     "http-status-codes": "^2.2.0",
     "mercurius": "^11.3.0",
     "sequelize": "^6.25.5",

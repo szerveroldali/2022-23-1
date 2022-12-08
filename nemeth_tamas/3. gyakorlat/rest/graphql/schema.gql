@@ -1,7 +1,7 @@
 type Query {
     hello: String!
-    helloName(name: String): String!
-    add(x: Int!, y: Int!): String!
+    helloName(name: String!): String!
+    add(x: Int!, y: Int!): Int!
 
     who: String!
 
@@ -13,13 +13,12 @@ type Query {
 
     comments: [Comment]
     comment(id: ID!): Comment
-
-    stats: [PriorityStat]
 }
 
 type Mutation {
     createTicket(title: String!, priority: Int!, text: String!): Ticket!
     deleteTicket(id: ID!): Boolean!
+
 }
 
 type User {
@@ -46,6 +45,7 @@ type Ticket {
     # Asszociációk
     comments: [Comment]
     users: [User]
+
 }
 
 type Comment {
@@ -57,10 +57,4 @@ type Comment {
     # Asszociációk
     user: User
     ticket: Ticket
-}
-
-type PriorityStat {
-    priority: Int!
-    ticketsNum: Int
-    commentsNum: Int
 }
