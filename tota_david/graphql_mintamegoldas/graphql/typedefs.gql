@@ -1,9 +1,63 @@
+type Recipe {
+  id: ID!
+  name: String!
+  isVegetarian: Boolean!
+  doneCount: Int!
+  appliance: Appliance!
+  ingredients: [Ingredient]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input IngredientInput {
+  name: String!
+  # Default 0
+  amount: Int
+}
+
+type Ingredient {
+  id: ID!
+  name: String!
+  amount: Int!
+  isInBigStorage: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Appliance {
+  id: ID!
+  name: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Storage {
+  id: ID!
+  name: String!
+  capacity: Int!
+  ingredients: [Ingredient]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Statistics {
+  popularVegetarianRecipeCount: Int
+  mostPopularRecipeName: String
+  leastPopularRecipeName: String
+  bigStoragesCount: Int
+  averageDoneCount: Int
+}
+
 type Query {
-    # Elemi példa:
-    helloWorld: String
+  helloName: String!
+  recipes: [Recipe]
+  ingredient(id: ID!): Ingredient
+  smallestStorage: Storage
+  statistics: Statistics
+}
 
-    # Példa paraméterezésre:
-    helloName(name: String!): String
-
-    # TODO: Készítsd el a schema hiányzó részeit
+type Mutation {
+  updateIngredient(ingredientId: ID!, input: IngredientInput): Ingredient
+  storeIngredients(storageId: ID!, ingredients: [IngredientInput]): [Ingredient]
+  changeApplianceName(applianceId: ID!, newName: String): Appliance
 }
