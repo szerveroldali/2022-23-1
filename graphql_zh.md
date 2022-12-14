@@ -1,3 +1,3 @@
-# GraphQL & Websocket zh
+# GraphQL zh
 
 ## Még nincs feltöltve
