@@ -589,14 +589,12 @@ query {
 ```json
 {
   "data": {
-    "statistics": {
-      "closestExam": {
-        "id": "5",
-        "startTime": "2022-12-22T08:30:00.000Z",
-        "endTime": "2022-12-22T10:30:00.000Z",
-        "location": "Online",
-        "maxStudents": 130
-      }
+    "closestExam": {
+      "id": "5",
+      "startTime": "2022-12-22T08:30:00.000Z",
+      "endTime": "2022-12-22T10:30:00.000Z",
+      "location": "Online",
+      "maxStudents": 130
     }
   }
 }
