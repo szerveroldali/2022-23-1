@@ -362,7 +362,7 @@ Legyen lehetőség a hallgatók felől indulva lekérni azokat a vizsgákat, ame
 
 Kérés:
 
-```
+```graphql
 query {
   students {
     id
