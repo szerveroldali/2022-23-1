@@ -187,9 +187,9 @@ Ebben a feladatban a paraméter most egy százalékos teljesítményeket tartalm
 Az érdemjegyek határai:
 
 - 1, ha százalék < 40
-- 2, ha 40 <= százalék > 55
-- 3, ha 55 <= százalék > 70
-- 4, ha 70 <= százalék > 85
+- 2, ha 40 <= százalék < 55
+- 3, ha 55 <= százalék < 70
+- 4, ha 70 <= százalék < 85
 - 5, ha százelék >= 85
 
 Kérés:
